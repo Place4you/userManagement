@@ -5,17 +5,17 @@
                 <h2 class="p-3 bg-dark text-white font-weight-bold">Department Lists</h2>
         
                 <!-- Loading Spinner -->
-                  <ng-container *ngIf="loading">
-                    <div class="d-flex justify-content-center mt-3">
-                        <div class="spinner-border text-primary" role="status">
-                          <span class="visually-hidden">Loading...</span>
-                        </div>
-                      </div>
-                 </ng-container>
-                
+                 @if(loading){
+                    <ng-container>
+                        <div class="d-flex justify-content-center align-top mt-3">
+                            <div class="loader"></div>
+                          </div>
+                     </ng-container>
+                 }
+                            
         
                 <!-- Data Table -->
-              @if(!loading){
+              @else{
       
                 <table class="table table-striped" >
                   <thead>
@@ -24,8 +24,8 @@
                       <th scope="col">Name</th>
                       <th scope="col">Logo</th>
                       <th scope="col">Department</th>
-                      <th scope="col">Edit</th>
-                      <th scope="col">Delete</th>
+                      <!-- <th scope="col">Edit</th>
+                      <th scope="col">Delete</th> -->
       
                     </tr>
                   </thead>
@@ -36,8 +36,8 @@
                               <td>{{ dep.departmentId  }}</td>
                               <td>{{ dep.departmentLogo }}</td>
                               <td>{{ dep.departmentName }}</td>
-                              <td><button class="btn btn-success" (click)="editDept(dep)" >Edit</button></td>
-                              <td><button class="btn btn-danger" (click)="deleteDept(dep.departmentId)" >Delete</button></td>
+                              <!-- <td><button class="btn btn-success" (click)="editDept(dep)" >Edit</button></td>
+                              <td><button class="btn btn-danger" (click)="deleteDept(dep.departmentId)" >Delete</button></td> -->
                             </tr>
                       }
                    
