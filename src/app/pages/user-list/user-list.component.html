@@ -1,1 +1,56 @@
-<p>user-list works!</p>
+<div class="container mt-5">
+
+            <!-- Department Lists Table -->
+            <div class="container mt-3">
+                <h2 class="p-3 bg-dark text-white font-weight-bold">Department Lists</h2>
+        
+                <!-- Loading Spinner -->
+                  <ng-container *ngIf="loading">
+                    <div class="d-flex justify-content-center mt-3">
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                      </div>
+                 </ng-container>
+                
+        
+                <!-- Data Table -->
+              @if(!loading){
+      
+                <table class="table table-striped" >
+                  <thead>
+                    <tr>
+                      <th scope="col">Sr Number</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Logo</th>
+                      <th scope="col">Department</th>
+                      <th scope="col">Edit</th>
+                      <th scope="col">Delete</th>
+      
+                    </tr>
+                  </thead>
+                  <tbody>
+                      @for(dep of deptInfo;track $index){
+                          <tr>
+                              <th scope="row">{{ $index + 1 }}</th>
+                              <td>{{ dep.departmentId  }}</td>
+                              <td>{{ dep.departmentLogo }}</td>
+                              <td>{{ dep.departmentName }}</td>
+                              <td><button class="btn btn-success" (click)="editDept(dep)" >Edit</button></td>
+                              <td><button class="btn btn-danger" (click)="deleteDept(dep.departmentId)" >Delete</button></td>
+                            </tr>
+                      }
+                   
+                    <tr *ngIf="deptInfo.length === 0">
+                      <td colspan="4" class="text-center">No Data Found</td>
+                    </tr>
+                  </tbody>
+                </table>
+              }
+              </div>
+  
+  </div>
+
+  
+  
+

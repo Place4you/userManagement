@@ -34,7 +34,7 @@ export class LoginComponent {
         response => {
           localStorage.setItem('loggedUser', JSON.stringify(response)); // Assuming response contains user details
           alert('Login successful!');
-          this.router.navigateByUrl('/');
+          this.router.navigateByUrl('/user-list');
         },
         error => {
           this.errorMessage = 'Login after signup failed. Please try logging in manually.';

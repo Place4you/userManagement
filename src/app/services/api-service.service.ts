@@ -18,5 +18,11 @@ export class ApiServiceService {
   loginUser(url:string,data:{emailId:any, Password:any}){
     return this.http.post(`${Constant.API_URL}` +url, data);
   }
+
+  getallapi(getdept:any){
+
+    return this.http.get(getdept);
+  }
+
   
 }
