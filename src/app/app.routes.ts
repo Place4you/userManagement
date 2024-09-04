@@ -3,6 +3,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { LayoutComponent } from './pages/layout/layout.component';
 import { UserListComponent } from './pages/user-list/user-list.component';
 import { CreateUserComponent } from './pages/create-user/create-user.component';
+import { SignupComponent } from './pages/signup/signup.component';
 
 export const routes: Routes = [
     {
@@ -13,6 +14,10 @@ export const routes: Routes = [
     {
         path:'login',
         component: LoginComponent
+    },
+    {
+        path:'signup',
+        component: SignupComponent
     },
     {
         path:'',
