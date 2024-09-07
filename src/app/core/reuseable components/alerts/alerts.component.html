@@ -1,9 +1,9 @@
-<!-- @if(showAlert){
+@if(showAlert){
 <div  class="fixed top-5 right-5 w-full max-w-sm">
     @if(alertType === 'success')
     {
         <ng-container>
-        <div class="flex w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-md" [ngClass]="alertClass">
+        <div class="flex w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-md" [ngClass]="success">
             <div class="flex items-center justify-center w-12" [ngClass]="iconBgColor">
             <i [class]="iconClass"></i>
             </div>
@@ -37,40 +37,12 @@
     }
   </div>
 }
-   -->
+  
 
 
-   <!-- <div *ngIf="showAlert" class="fixed top-5 right-5 w-full max-w-sm">
-    <ng-container *ngIf="alertType === 'success'">
-      <div class="flex w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-md" [ngClass]="alertClass">
-        <div class="flex items-center justify-center w-12" [ngClass]="iconBgColor">
-          <i [class]="iconClass"></i>
-        </div>
-        <div class="px-4 py-2 -mx-3">
-          <div class="mx-3">
-            <span [ngClass]="messageColor" class="font-semibold">{{ title }}</span>
-            <p class="text-sm text-gray-600">{{ message }}</p>
-          </div>
-        </div>
-      </div>
-    </ng-container>
+
   
-    <ng-container *ngIf="alertType === 'error'">
-      <div class="flex w-full max-w-sm overflow-hidden rounded-lg shadow-md bg-red-500">
-        <div class="flex items-center justify-center w-12 bg-red-500">
-          <i class="fas fa-exclamation-circle text-white text-xl"></i>
-        </div>
-        <div class="px-4 py-2 -mx-3">
-          <div class="mx-3">
-            <span class="font-semibold text-white">Error</span>
-            <p class="text-sm text-white">{{ errorMessage }}</p>
-          </div>
-        </div>
-      </div>
-    </ng-container>
-  </div> -->
-  
-  <div *ngIf="showAlert" class="fixed top-5 right-5 w-full max-w-sm">
+  <!-- <div *ngIf="showAlert" class="fixed top-5 right-5 w-full max-w-sm">
     <div class="flex w-full max-w-sm overflow-hidden  rounded-lg shadow-md bg-green-500">
       <div class="flex items-center justify-center w-12 bg-green-500">
         <i class="fas fa-check-circle text-white text-xl"></i>
@@ -83,5 +55,24 @@
       </div>
     </div>
   </div>
+
+
+  <!-- alerts.component.html -->
+<!-- <div class="fixed top-5 right-5 w-full max-w-sm" *ngIf="showAlert">
+    <div [ngClass]="{'bg-green-500': alertType === 'success', 'bg-red-500': alertType === 'error'}"
+         class="flex w-full max-w-sm overflow-hidden rounded-lg shadow-md text-white">
+      <div class="flex items-center justify-center w-12">
+        <i [ngClass]="{'fas fa-check-circle': alertType === 'success', 'fas fa-exclamation-circle': alertType === 'error'}" class="text-xl"></i>
+      </div>
+      <div class="px-4 py-2 -mx-3">
+        <div class="mx-3">
+          <span class="font-semibold">{{ alertType === 'success' ? 'Success' : 'Error' }}</span>
+          <p class="text-sm">{{ message }}</p>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  
+
   
   

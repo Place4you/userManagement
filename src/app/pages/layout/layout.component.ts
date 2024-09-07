@@ -1,23 +1,22 @@
+// layout.component.ts
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { AlertsComponent } from '../../core/reuseable components/alerts/alerts.component';
-
+import { AlertSrvService } from '../../services/alert-srv.service';
+import { AlertsComponent } from "../../core/reuseable components/alerts/alerts.component";
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, AlertsComponent],
+  imports: [CommonModule, RouterOutlet, AlertsComponent , RouterLink, AlertsComponent],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.css'
+  styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent {
-  isMenuOpen : Boolean = false;
-  isAnimatingIn:boolean= true;
+  isMenuOpen: boolean = false;
+  isAnimatingIn: boolean = true;
   isSticky: boolean = false;
-  @ViewChild(AlertsComponent) alertComponent!: AlertsComponent;
 
-
-  constructor( private router: Router){}
+  constructor(private router: Router, private alertService: AlertSrvService) {}
 
   MobileMenu() {
     this.isAnimatingIn = true; // Prepare for sliding in animation
@@ -26,7 +25,6 @@ export class LayoutComponent {
 
   closeMenu() {
     this.isAnimatingIn = false; // Prepare for sliding out animation
-    // Delay setting isMenuOpen to false to allow the slide-out animation to complete
     setTimeout(() => {
       this.isMenuOpen = false;
     }, 300); // 300ms matches the animation duration
@@ -39,17 +37,12 @@ export class LayoutComponent {
   }
 
   onLogout() {
-
-    // Remove user details from localStorage
     localStorage.removeItem('loggedUser');
-    this.alertComponent.showSuccessAlert('logout'); // Show logout success alert
-    // Navigate back to the login page
+    this.alertService.showSuccess('Logout successful!');
     this.router.navigateByUrl('/login');
   }
 
   onError() {
-    this.alertComponent.showErrorAlert('An error occurred during logout.');
+    this.alertService.showError('An error occurred during logout.');
   }
-  
-
 }

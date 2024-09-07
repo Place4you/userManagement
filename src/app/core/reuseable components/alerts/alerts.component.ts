@@ -1,58 +1,34 @@
-import { CommonModule, NgClass } from '@angular/common';
-import { Component } from '@angular/core';
-
+// alerts.component.ts
+import { Component, OnInit} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { AlertSrvService } from '../../../services/alert-srv.service';
 @Component({
   selector: 'app-alerts',
   standalone: true,
-  imports: [NgClass, CommonModule],
+  imports: [CommonModule],
   templateUrl: './alerts.component.html',
-  styleUrl: './alerts.component.css'
+  styleUrls: ['./alerts.component.css']
 })
-export class AlertsComponent {
-
+export class AlertsComponent implements OnInit {
   showAlert = false;
   alertType: 'success' | 'error' = 'success';
   message: string = '';
-  errorMessage: string = '';
-  title: string = '';
-  iconClass: string = '';
-  iconBgColor: string = '';
-  alertClass: string = '';
-  messageColor: string = '';
 
-  constructor() { }
+  constructor(private alertService: AlertSrvService) {}
 
-  // Show success alert (login/logout)
-  showSuccessAlert(type: 'login' | 'logout') {
-    this.alertType = 'success';
-    this.showAlert = true;
-    if (type === 'login') {
-      this.title = 'Success';
-      this.message = 'Login successful!';
-      this.iconClass = 'fas fa-check-circle text-white text-xl';
-      this.iconBgColor = 'bg-green-500';
-      this.messageColor = 'text-green-500';
-    } else if (type === 'logout') {
-      this.title = 'Success';
-      this.message = 'Logout successful!';
-      this.iconClass = 'fas fa-sign-out-alt text-white text-xl';
-      this.iconBgColor = 'bg-blue-500';
-      this.messageColor = 'text-blue-500';
-    }
-
-    setTimeout(() => this.closeAlert(), 3000); // Automatically close after 3 seconds
+  ngOnInit() {
+    this.alertService.alert$.subscribe(alert => {
+      if (alert) {
+        this.alertType = alert.type;
+        this.message = alert.message;
+        this.showAlert = true;
+        setTimeout(() => this.closeAlert(), 3000); // Automatically close after 3 seconds
+      } else {
+        this.showAlert = false;
+      }
+    });
   }
 
-  // Show error alert
-  showErrorAlert(errorMessage: string) {
-    this.alertType = 'error';
-    this.showAlert = true;
-    this.errorMessage = errorMessage;
-
-    setTimeout(() => this.closeAlert(), 3000); // Automatically close after 3 seconds
-  }
-
-  // Function to close alert
   closeAlert() {
     this.showAlert = false;
   }

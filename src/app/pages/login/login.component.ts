@@ -5,6 +5,7 @@ import { SignupComponent } from '../signup/signup.component';  // Ensure this im
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ApiServiceService } from '../../services/api-service.service';
+import { AlertSrvService } from '../../services/alert-srv.service';
 
 @Component({
   selector: 'app-login',
@@ -14,66 +15,52 @@ import { ApiServiceService } from '../../services/api-service.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-
-  @ViewChild(AlertsComponent) alertComponent!: AlertsComponent;
-  
-  userSrv = inject(ApiServiceService);
-  router = inject(Router);
-  loginurl = "/login";
-  login:boolean=true;
-
   userObj: any = {
     emailId: '',
     Password: ''
   };
-
+  loginurl = "/login";
+  login:boolean=true;
   errorMessage: string | null = null;
 
+  constructor(private userSrv: ApiServiceService, private router: Router, private alertService: AlertSrvService) {}
+
   onApiLogin() {
-      const loginUser = {
-        emailId: this.userObj.emailId,
-        Password: this.userObj.Password
-      };
-      this.userSrv.loginUser('/login', loginUser).subscribe(
-        response => {
-          localStorage.setItem('loggedUser', JSON.stringify(response)); // Assuming response contains user details
-          // Simulate login API call
-          
-          this.alertComponent.showSuccessAlert('login'); // Show login success alert
-          this.router.navigateByUrl('/user-list');
-        },
-        error => {
-          this.errorMessage = 'Login Failed. Invalid Details';
-
-        })
-
+    const loginUser = {
+      emailId: this.userObj.emailId,
+      Password: this.userObj.Password
+    };
+    this.userSrv.loginUser('/login', loginUser).subscribe(
+      response => {
+        localStorage.setItem('loggedUser', JSON.stringify(response));
+        this.alertService.showSuccess('Login successful!');
+        this.router.navigateByUrl('/user-list');
+      },
+      error => {
+        this.alertService.showError('Login Failed. Invalid Details');
       }
-
-      onError() {
-        this.alertComponent.showErrorAlert('An error occurred during login.');
-      }
-
-      onHardLogin() {
-        const loginUser = {
-          emailId: this.userObj.emailId,
-          Password: this.userObj.Password
-        };
-      
-        if (loginUser.emailId === "sadi" && loginUser.Password === "123") {
-          const userData = {
-            user: loginUser.emailId,
-            pass: loginUser.Password
-          };
-      
-          // Convert the object to a JSON string and store it in localStorage
-          localStorage.setItem('data', JSON.stringify(userData));
-          this.router.navigateByUrl('/layout/user-list');
-          alert('Login successful!');
-        } else {
-          alert('Login after signup failed. Please try logging in manually.');
-        }
-      }
-      
-
-
+    );
   }
+
+  onHardLogin() {
+    const loginUser = {
+      emailId: this.userObj.emailId,
+      Password: this.userObj.Password
+    };
+    if (loginUser.emailId === 'sadi' && loginUser.Password === '123') {
+      const userData = {
+        user: loginUser.emailId,
+        pass: loginUser.Password
+      };
+      localStorage.setItem('data', JSON.stringify(userData));
+      this.router.navigateByUrl('/layout/user-list');
+      alert('Login successful!');
+    } else {
+      alert('Login after signup failed. Please try logging in manually.');
+    }
+  }
+  }
+      
+
+
+  
