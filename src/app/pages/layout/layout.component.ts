@@ -14,7 +14,6 @@ import { AlertsComponent } from "../../core/reuseable components/alerts/alerts.c
 export class LayoutComponent {
   isMenuOpen: boolean = false;
   isAnimatingIn: boolean = true;
-  isSticky: boolean = false;
 
   constructor(private router: Router, private alertService: AlertSrvService) {}
 
@@ -30,11 +29,6 @@ export class LayoutComponent {
     }, 300); // 300ms matches the animation duration
   }
 
-  @HostListener('window:scroll', [])
-  onScroll() {
-    const scrollPosition = window.scrollY || document.documentElement.scrollTop;
-    this.isSticky = scrollPosition > 0;
-  }
 
   onLogout() {
     localStorage.removeItem('loggedUser');

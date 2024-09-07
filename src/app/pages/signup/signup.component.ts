@@ -28,7 +28,7 @@ export class SignupComponent {
 
   onSignup() {
     if (this.newUserobj.emailId && this.newUserobj.fullName && this.newUserobj.password) {
-      this.userSrv.createUser(Constant.POST_URL, this.newUserobj).subscribe(
+      this.userSrv.createUser(Constant.SIGNUP_URL, this.newUserobj).subscribe(
         response => {
           alert('Signup successful!');
           localStorage.setItem('signupUser', JSON.stringify(this.newUserobj));

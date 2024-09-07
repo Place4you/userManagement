@@ -22,7 +22,7 @@ export class AlertsComponent implements OnInit {
         this.alertType = alert.type;
         this.message = alert.message;
         this.showAlert = true;
-        setTimeout(() => this.closeAlert(), 3000); // Automatically close after 3 seconds
+        setTimeout(() => this.closeAlert(), 2000); // Automatically close after 3 seconds
       } else {
         this.showAlert = false;
       }

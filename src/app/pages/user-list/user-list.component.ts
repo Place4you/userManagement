@@ -1,67 +1,55 @@
-import { IDepartment } from './../../core/Interface/IDepartment';
-import { ApiServiceService } from './../../services/api-service.service';
 import { Component, inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { ApiServiceService } from './../../services/api-service.service';
 import { Constant } from '../../core/Constant';
-
+import { IUser } from './../../core/Interface/IUsers'; // Assuming IUser is correctly imported
+import { IDepartment } from '../../core/Interface/IDepartment';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './user-list.component.html',
-  styleUrl: './user-list.component.css'
+  styleUrls: ['./user-list.component.css'] // Corrected this to `styleUrls`
 })
 export class UserListComponent implements OnInit {
-
+  flase:boolean= false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
   loading: boolean = false;
   update: boolean = false;
 
-  url:string = '';
+  userInfo: IUser[] = []; // Holds the user data from the API
 
-  deptInfo: IDepartment [] = [];
-  dept: any[]=[];
-  departmentId: number= 0;
-  departmentLogo = '';
-  departmentName = '';
-  // Form properties
-
-
-// service for department
-  constructor(private apisrc: ApiServiceService){}
+  constructor(private apisrc: ApiServiceService) {}
 
   http = inject(HttpClient);
 
   ngOnInit() {
-    this.getDepartment();
+    this.getAllUsers();
   }
 
-
-
-    
-// Fetch Department data
-  getDepartment() {
+  // Fetch user data
+  getAllUsers() {
     this.loading = true;
-
-    this.apisrc.getallapi(Constant.GET_DEPT).subscribe(
-      (res:any) => {
-        this.deptInfo = res.data;
+    this.apisrc.getallapi(Constant.GET_USERS).subscribe(
+      (res: { data: IUser[] }) => {
+        this.userInfo = res.data;
+        
         this.errorMessage = null;
         this.loading = false;
       },
       (error) => {
-        this.errorMessage = "Failed to fetch data. Please try again later.";
+        this.errorMessage = 'Failed to fetch data. Please try again later.';
         this.loading = false;
       }
     );
   }
 
-
-
-
-
+  // `trackBy` function to optimize rendering
+  trackById(index: number, user: IUser) {
+    return user.userId; // Assumes `userId` is the unique identifier
+  }
 }

@@ -1,6 +1,8 @@
+import { IUser } from './../core/Interface/IUsers';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Constant } from '../core/Constant';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +21,9 @@ export class ApiServiceService {
     return this.http.post(`${Constant.API_URL}` +url, data);
   }
 
-  getallapi(getdept:any){
-
-    return this.http.get(getdept);
+  getallapi(url: string): Observable<{ data: IUser[] }> {
+    return this.http.get<{ data: IUser[] }>(url);
   }
-
+  
   
 }

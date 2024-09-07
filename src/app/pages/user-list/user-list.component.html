@@ -1,58 +1,47 @@
-<div class="container mt-5">
+<div class="container mx-auto px-4 mt-5">
+  <!-- User Lists Table -->
+  <div class="mt-3">
+    <h2 class="p-4 bg-gray-800 text-white font-medium rounded-t-lg shadow-md">User Lists</h2>
 
-            <!-- Department Lists Table -->
-            <div class="container mt-3">
-                <h2 class="p-3 bg-dark text-white font-weight-bold">Department Lists</h2>
-        
-                <!-- Loading Spinner -->
-                 @if(loading){
-                    <ng-container>
-                        <div class="d-flex justify-content-center align-top mt-3">
-                            <div class="loader"></div>
-                          </div>
-                     </ng-container>
-                 }
-                            
-        
-                <!-- Data Table -->
-              @else{
-      
-                <table class="table table-striped" >
-                  <thead>
-                    <tr>
-                      <th scope="col">Sr Number</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Logo</th>
-                      <th scope="col">Department</th>
-                      <!-- <th scope="col">Edit</th>
-                      <th scope="col">Delete</th> -->
-      
-                    </tr>
-                  </thead>
-                  <tbody>
-                      @for(dep of deptInfo;track $index){
-                          <tr>
-                              <th scope="row">{{ $index + 1 }}</th>
-                              <td>{{ dep.departmentId  }}</td>
-                              <td>{{ dep.departmentLogo }}</td>
-                              <td>{{ dep.departmentName }}</td>
-                              <!-- <td><button class="btn btn-success" (click)="editDept(dep)" >Edit</button></td>
-                              <td><button class="btn btn-danger" (click)="deleteDept(dep.departmentId)" >Delete</button></td> -->
-                            </tr>
-                      }
-                   
-                    <tr *ngIf="deptInfo.length === 0">
-                      <td colspan="4" class="text-center">No Data Found</td>
-                    </tr>
-                  </tbody>
-                </table>
-              }
-              </div>
-  
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="flex justify-center items-center mt-3">
+      <div class="loader"></div>
+    </div>
+
+    <!-- Data Table -->
+    <div *ngIf="!loading" class="mt-6 overflow-x-auto">
+      <div class="inline-block min-w-full align-middle">
+        <div class="overflow-hidden border border-gray-200 rounded-lg shadow-md">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-4 py-3.5 text-sm font-medium text-left text-gray-500">User ID</th>
+                <th scope="col" class="px-4 py-3.5 text-sm font-medium text-left text-gray-500">User Name</th>
+                <th scope="col" class="px-4 py-3.5 text-sm font-medium text-left text-gray-500">Email</th>
+                <th scope="col" class="px-4 py-3.5 text-sm font-medium text-left text-gray-500">Full Name</th>
+                <th scope="col" class="px-4 py-3.5 text-sm font-medium text-left text-gray-500">Role</th>
+                <th scope="col" class="px-4 py-3.5 text-sm font-medium text-left text-gray-500">Created Date</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <!-- Iterate over userInfo -->
+              <tr *ngFor="let user of userInfo; let i = index; trackBy: trackById">
+                <td class="px-4 py-4 text-sm whitespace-nowrap">{{ user.userId }}</td>
+                <td class="px-4 py-4 text-sm whitespace-nowrap">{{ user.userName }}</td>
+                <td class="px-4 py-4 text-sm whitespace-nowrap">{{ user.emailId }}</td>
+                <td class="px-4 py-4 text-sm whitespace-nowrap">{{ user.fullName }}</td>
+                <td class="px-4 py-4 text-sm whitespace-nowrap">{{ user.role }}</td>
+                <td class="px-4 py-4 text-sm whitespace-nowrap">{{ user.createdDate | date }}</td>
+              </tr>
+
+              <!-- If no data found -->
+              <tr *ngIf="userInfo.length === 0">
+                <td colspan="8" class="text-center py-4 text-gray-500">No Data Found</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
-
-
-
-  
-  
-
+</div>
