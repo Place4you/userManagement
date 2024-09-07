@@ -20,7 +20,7 @@ export const routes: Routes = [
         component: SignupComponent
     },
     {
-        path:'layout',
+        path:'',
         component:LayoutComponent,
         children:[
             {
