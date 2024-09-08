@@ -15,6 +15,7 @@ import { AlertSrvService } from '../../services/alert-srv.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+
   userObj: any = {
     emailId: '',
     Password: ''
@@ -22,16 +23,20 @@ export class LoginComponent {
   loginurl = "/login";
   login:boolean=true;
   errorMessage: string | null = null;
+  isLoading:boolean = false;
 
   constructor(private userSrv: ApiServiceService, private router: Router, private alertService: AlertSrvService) {}
 
   onApiLogin() {
+    this.isLoading = true;
+
     const loginUser = {
       emailId: this.userObj.emailId,
       Password: this.userObj.Password
     };
     this.userSrv.loginUser('/login', loginUser).subscribe(
       response => {
+        this.isLoading = false;
         localStorage.setItem('loggedUser', JSON.stringify(response));
         this.alertService.showSuccess('Login successful!');
         this.router.navigateByUrl('/user-list');
@@ -42,23 +47,23 @@ export class LoginComponent {
     );
   }
 
-  onHardLogin() {
-    const loginUser = {
-      emailId: this.userObj.emailId,
-      Password: this.userObj.Password
-    };
-    if (loginUser.emailId === 'sadi' && loginUser.Password === '123') {
-      const userData = {
-        user: loginUser.emailId,
-        pass: loginUser.Password
-      };
-      localStorage.setItem('data', JSON.stringify(userData));
-      this.router.navigateByUrl('/layout/user-list');
-      alert('Login successful!');
-    } else {
-      alert('Login after signup failed. Please try logging in manually.');
-    }
-  }
+  // onHardLogin() {
+  //   const loginUser = {
+  //     emailId: this.userObj.emailId,
+  //     Password: this.userObj.Password
+  //   };
+  //   if (loginUser.emailId === 'sadi' && loginUser.Password === '123') {
+  //     const userData = {
+  //       user: loginUser.emailId,
+  //       pass: loginUser.Password
+  //     };
+  //     localStorage.setItem('data', JSON.stringify(userData));
+  //     this.router.navigateByUrl('/layout/user-list');
+  //     alert('Login successful!');
+  //   } else {
+  //     alert('Login after signup failed. Please try logging in manually.');
+  //   }
+  // }
   }
       
 
