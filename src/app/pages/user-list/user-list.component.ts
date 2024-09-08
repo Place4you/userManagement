@@ -5,8 +5,7 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { ApiServiceService } from './../../services/api-service.service';
 import { Constant } from '../../core/Constant';
 import { IUser } from './../../core/Interface/IUsers'; // Assuming IUser is correctly imported
-import { IDepartment } from '../../core/Interface/IDepartment';
-
+import { TitleService } from '../../services/title.service';
 @Component({
   selector: 'app-user-list',
   standalone: true,
@@ -15,6 +14,7 @@ import { IDepartment } from '../../core/Interface/IDepartment';
   styleUrls: ['./user-list.component.css'] // Corrected this to `styleUrls`
 })
 export class UserListComponent implements OnInit {
+  title: string="User list of all users.";
   flase:boolean= false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
@@ -23,12 +23,14 @@ export class UserListComponent implements OnInit {
 
   userInfo: IUser[] = []; // Holds the user data from the API
 
-  constructor(private apisrc: ApiServiceService) {}
+  constructor(private apisrc: ApiServiceService, private titlesrv: TitleService) {}
 
   http = inject(HttpClient);
 
   ngOnInit() {
     this.getAllUsers();
+    this.titlesrv.setTitle(this.title);
+
   }
 
   // Fetch user data

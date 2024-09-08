@@ -52,36 +52,57 @@
   </nav>
 
   <!-- Desktop Nav (visible on desktop only) -->
- <div class="hidden lg:flex flex-col h-screen w-[20%] bg-gray-900 text-white fixed left-0 top-0">
-  <!-- Logo -->
-  <div class="flex items-center justify-start py-4 px-4 border-b border-gray-700">
-    <img src="/assets/slack.svg" alt="Logo" class="h-8 w-8 object-cover mr-2" />
-    <span class="text-2xl font-bold" style="font-size: 1.5rem">User Management</span>
-  </div>
-  <!-- Navigation Links -->
-  <div class="mt-10 flex flex-col space-y-4 px-4">
-    <a [routerLink]="['/layout']" routerLinkActive="bg-blue-600" class="flex items-center py-2 px-4 rounded hover:bg-gray-700">
-      <i class="fa-solid fa-house"></i>
-      <span class="ml-3">Dashboard</span>
-    </a>
-    <a [routerLink]="['/user-list']" routerLinkActive="bg-blue-600" class="flex items-center py-2 px-4 rounded hover:bg-gray-700">
-      <i class="fa-solid fa-user"></i>
-      <span class="ml-3">User-list</span>
-    </a>
-    <a [routerLink]="['/settings']" routerLinkActive="bg-blue-600" class="flex items-center py-2 px-4 rounded hover:bg-gray-700">
-      <i class="fa-solid fa-cog"></i>
-      <span class="ml-3">Settings</span>
-    </a>
-  </div>
+ <div class="flex-wrap fixed hidden lg:flex flex-col h-screen w-[20%] bg-gray-900 text-white  left-0 top-0">
+
+        <!-- Logo -->
+        <div class="flex items-center justify-start py-4 px-4 border-b border-gray-700">
+          <img src="/assets/slack.svg" alt="Logo" class="h-8 w-8 object-cover mr-2" />
+          <span class="text-2xl font-bold" style="font-size: 1.5rem">User Management</span>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="mt-10 flex flex-col space-y-4 px-4">
+          <a 
+            *ngFor="let link of navLinks"
+            [routerLink]="[link.path]" 
+            (click)="link.action === 'logout' ? onLogout() : null"
+            routerLinkActive="bg-blue-600 text-white" 
+            [routerLinkActiveOptions]="{ exact: true }" 
+            class="flex items-center py-2 px-4 rounded hover:bg-gray-700 transition-colors duration-300 ease-in-out"
+          >
+            <i class="fa-solid" [ngClass]="link.icon"></i>
+            <span class="ml-3">{{ link.title }}</span>
+          </a>
+        </div>
+        
 </div>
 
 <!-- Main Content Area (80% width) -->
-<div class="lg:w-4/5 w-full ml-auto bg-[#F6F6F6]">
+<div class="flex-wrap lg:w-4/5 w-full ml-auto bg-[#F6F6F6]">
   <!-- Header with Logo and Title (Top fixed section) -->
-  <div class="sticky top-0 z-50 flex items-center justify-start px-6 py-4 bg-white shadow-md">
-    <img src="/assets/slack.svg" alt="Logo" class="h-8 w-8 object-cover mr-2" />
-    <span class="text-xl font-bold">User Management</span>
+  <div class=" top-0 z-50 flex items-center justify-between px-6 py-4 bg-white shadow-md max-h-auto">
+    <!-- Left Aligned Section -->
+    <div class="flex items-center space-x-4">
+      <h3 class="font-bold font-gilroy text-lg">Here is your {{ currentTitle }}</h3>
+    </div>
+    
+    <!-- Right Aligned Section -->
+    <div class="flex items-center space-x-8">
+      <!-- Logged-in User Name -->
+      <div class="text-sm font-medium">
+        <span class="font-gilroy font-semibold"> {{ loggedInUserName }}</span>
+        <p class="italic font-thin">Admin</p>
+      </div>
+  
+      <!-- Placeholder Avatar -->
+      <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+        <img class="object-contain" src="/assets/avatar.jpg"  alt="">
+        
+
+      </div>
+    </div>
   </div>
+  
 
   <!-- Router Outlet (Main Content) -->
   <div class="p-6">

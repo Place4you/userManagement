@@ -4,6 +4,7 @@ import { LayoutComponent } from './pages/layout/layout.component';
 import { UserListComponent } from './pages/user-list/user-list.component';
 import { CreateUserComponent } from './pages/create-user/create-user.component';
 import { SignupComponent } from './pages/signup/signup.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 export const routes: Routes = [
     {
@@ -24,13 +25,19 @@ export const routes: Routes = [
         component:LayoutComponent,
         children:[
             {
+                path:'dashboard',
+                component: DashboardComponent
+            },
+            {
                 path:'user-list',
                 component:UserListComponent
             },
             {
                 path:'create-user',
                 component: CreateUserComponent
-            }
+            },
+
+
         ]
     },
     

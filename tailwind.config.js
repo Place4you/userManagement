@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'tablet': { 'min': '700px', 'max': '1025px' }, // Custom tablet breakpoint
+      },
       fontFamily: {
         gilroy: ['Gilroy', 'sans-serif'], // Custom font
       },

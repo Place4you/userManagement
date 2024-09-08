@@ -1,22 +1,60 @@
 // layout.component.ts
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AlertSrvService } from '../../services/alert-srv.service';
 import { AlertsComponent } from "../../core/reuseable components/alerts/alerts.component";
+import { TitleService } from '../../services/title.service';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, AlertsComponent , RouterLink, AlertsComponent],
+  imports: [CommonModule, RouterOutlet, RouterLinkActive ,  DashboardComponent , RouterLink, AlertsComponent],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css']
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
   isMenuOpen: boolean = false;
   isAnimatingIn: boolean = true;
   isSticky: boolean = false;
+  currentTitle: string | null = null;
+  loggedInUserName :string = '';
 
-  constructor(private router: Router, private alertService: AlertSrvService) {}
+  // Define navigation links in an array
+    navLinks = [
+      { path: '/dashboard', icon: 'fa-house', title: 'Dashboard' },
+      { path: '/user-list', icon: 'fa-user', title: 'User-list' },
+      { path: '/settings', icon: 'fa-cog', title: 'Settings' },
+      { action: 'logout', icon: 'fa-right-from-bracket', title: 'Logout' } // Changed to action
+    ];
+
+  constructor(private router: Router, private alertService: AlertSrvService, private titlesrv: TitleService) {
+
+  }
+  ngOnInit(): void {
+    this.getUserFromLocalStorage();
+
+
+    this.titlesrv.title$.subscribe(title=>{
+      this.currentTitle = title;
+    })
+  }
+
+  private getUserFromLocalStorage(): void {
+    const storedUser = localStorage.getItem('loggedUser');
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        this.loggedInUserName = parsedUser?.data?.emailId|| 'Guest';
+      } catch (e) {
+        console.error('Error parsing user data:', e);
+        this.loggedInUserName = 'Guest';
+      }
+    } else {
+      this.loggedInUserName = 'Guest';
+    }
+  }
+  
 
   MobileMenu() {
     this.isAnimatingIn = true; // Prepare for sliding in animation
