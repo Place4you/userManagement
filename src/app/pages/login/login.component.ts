@@ -34,6 +34,7 @@ export class LoginComponent {
       emailId: this.userObj.emailId,
       Password: this.userObj.Password
     };
+    setTimeout(('hello'),4000);
     this.userSrv.loginUser('/login', loginUser).subscribe(
       response => {
         this.isLoading = false;

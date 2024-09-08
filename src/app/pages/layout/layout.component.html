@@ -1,100 +1,95 @@
+<ng-container>
+  <!-- Mobile Nav (visible on mobile only) -->
+  <nav [ngClass]="{'sticky-nav': isSticky}" class="flex lg:hidden justify-between items-center my-4 px-4 py-2 sticky top-0 left-0 w-full bg-white z-50 shadow-sm">
+    <!-- Logo (Mobile) -->
+    <a href="#hero" class="flex items-center gap-2">
+      <img class="object-cover h-8 w-8" src="/assets/slack.svg" alt="Logo">
+      <span class="text-[1rem] font-bold">User Management</span>
+    </a>
 
+    <!-- Hamburger Icon -->
+    <div class="flex items-center">
+      <button (click)="MobileMenu()" [ngClass]="{ 'rotate-360': isMenuOpen }" class="text-2xl transition-transform duration-500 ease-in-out">
+        &#9776;
+      </button>
+    </div>
 
-  <ng-container>
-    <!-- Mobile Nav (visible on mobile only) -->
-    <nav [ngClass]="{'sticky-nav': isSticky}" class="flex justify-between items-center my-4 px-8 py-2 sticky top-0 left-0 w-full  z-50 sticky:bg-white" >
-      <!-- Logo (visible on mobile only) -->
-      <a href="#hero" class="flex justify-center items-center flex-nowrap gap-2">
-        <img class="object-cover max-h-10 max-w-10" src="/assets/slack.svg" alt="Logo">
-        <span class="text-2xl font-bold font-roboto">User Management</span>
-      </a>
-    
-      <!-- Navigation Links -->
-      <div class="hidden lg:flex flex-grow justify-center items-center space-x-8 text-2xl font-bold">
-        <a href="#hero" class="hover:text-blue-500">Product</a>
-        <a href="#features" class="hover:text-blue-500">Features</a>
-        <a href="#marketplace" class="hover:text-blue-500">Marketplace</a>
-        <a href="#benefit" class="hover:text-blue-500">Benefit</a>
-      </div>
-    
-      <!-- Login Button -->
-      <div class="hidden lg:flex">
-        <button (click)="onLogout()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Logout</button>
-      </div>
-    
-      <!-- Hamburger Icon -->
-      <div class="lg:hidden flex items-center">
-        <button
-          (click)="MobileMenu()"
-          [ngClass]="{ 'rotate-360': isMenuOpen }"
-          class="text-2xl transform transition-transform duration-500 ease-in-out rotate-180"
-        >
-          &#9776;
-        </button>
-      </div>
-    
-      <!-- Conditional Rendering for Mobile Menu -->
-      @if (isMenuOpen) {
-        <div [ngClass]="{'sticky-nav': isSticky}" class="fixed  shadow z-50 inset-0 bg-white  lg:hidden "
-        [ngClass]="{
-          'animate-slideInFromRight': isAnimatingIn,
-          'animate-slideInToRight': !isAnimatingIn
-        }">
-          <div class="flex flex-col h-full">
-            <div>
-              <!-- Header Section -->
-              <div class="flex items-center justify-between p-4 border-b border-gray-200">
-                <div class="flex justify-between">
-                  <!-- Logo -->
-                  <a href="#hero"  class="flex items-center space-x-2">
-                    <img class="h-10 w-10 object-cover" src="/assets/slack.svg" alt="Logo">
-                    <span class="text-2xl font-bold font-roboto">User Management</span>
-                  </a>
-                </div>
-                <div>
-                  <!-- Close Icon -->
-                  <button
-                    (click)="closeMenu()"
-                    class="relative text-2xl pr-3 pb-1 mb-0 top-2 transform transition-transform duration-500 ease-in-out"
-                  >
-                    <i class="fa-solid fa-circle-xmark" style="color: #ee1b30;"></i>
-                  </button>
-                </div>
-              </div>
-    
-              <!-- Navigation Links -->
-              <div class="flex flex-col p-4 space-y-4 font-bold text-xl">
-                <a href="#hero" class="flex items-center space-x-3 hover:text-blue-500">
-                  <i class="fa-brands fa-product-hunt text-xl"></i>
-                  <span>Product</span>
-                </a>
-                <a href="feature" class="flex items-center space-x-3 hover:text-blue-500">
-                  <i class="fa-solid fa-square-poll-horizontal text-xl"></i>
-                  <span>Features</span>
-                </a>
-                <a href="#marketplace" class="flex items-center space-x-3 hover:text-blue-500">
-                  <i class="fa-solid fa-lightbulb text-xl"></i>
-                  <span>Marketplace</span>
-                </a>
-                <a href="#benefit" class="flex items-center space-x-3 hover:text-blue-500">
-                  <i class="fa-solid fa-dragon text-xl"></i>
-                  <span>Benefit</span>
-                </a>
-              </div>
-    
-              <!-- Login Button -->
-              <div class="flex items-center justify-center p-4 border-t border-gray-200">
-                <button (click)="onLogout()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Logout</button>
-              </div>
-            </div>
-          </div>
+    <!-- Mobile Menu -->
+    <div *ngIf="isMenuOpen" class="fixed inset-0 bg-gray-900 text-white shadow-lg z-50">
+      <div class="flex flex-col h-full">
+        <!-- Header Section with Logo and Close Button -->
+        <div class="flex justify-between items-center p-4 border-b border-gray-200">
+          <!-- Logo (Mobile) -->
+          <a href="#hero" class="flex items-center gap-2">
+            <img class="object-cover h-8 w-8" src="/assets/slack.svg" alt="Logo">
+            <span class="text-[1rem] font-bold">User Management</span>
+          </a>
+      
+          <!-- Close Menu Icon -->
+          <button (click)="closeMenu()" class="text-2xl">
+            <i class="fa-solid fa-circle-xmark"></i>
+          </button>
         </div>
-      }
-    </nav>
-      </ng-container>
-      <app-alerts></app-alerts>
-
-      <div class="container mt-3">
-        <router-outlet></router-outlet>
+      
+        <!-- Navigation Links (Mobile) -->
+        <div class="flex flex-col p-6 space-y-6 font-bold text-lg ">
+          <a [routerLink]="['/layout']" routerLinkActive="bg-blue-600" class="flex items-center py-2 px-4 rounded hover:bg-gray-700">
+            <i class="fa-solid fa-house"></i>
+            <span class="ml-3">Dashboard</span>
+          </a>
+          <a [routerLink]="['/user-list']" routerLinkActive="bg-blue-600" class="flex items-center py-2 px-4 rounded hover:bg-gray-700">
+            <i class="fa-solid fa-user"></i>
+            <span class="ml-3">User-list</span>
+          </a>
+          <a [routerLink]="['/settings']" routerLinkActive="bg-blue-600" class="flex items-center py-2 px-4 rounded hover:bg-gray-700">
+            <i class="fa-solid fa-cog"></i>
+            <span class="ml-3">Settings</span>
+          </a>
+        </div>
       </div>
-    
+      
+    </div>
+  </nav>
+
+  <!-- Desktop Nav (visible on desktop only) -->
+ <div class="hidden lg:flex flex-col h-screen w-[20%] bg-gray-900 text-white fixed left-0 top-0">
+  <!-- Logo -->
+  <div class="flex items-center justify-start py-4 px-4 border-b border-gray-700">
+    <img src="/assets/slack.svg" alt="Logo" class="h-8 w-8 object-cover mr-2" />
+    <span class="text-2xl font-bold" style="font-size: 1.5rem">User Management</span>
+  </div>
+  <!-- Navigation Links -->
+  <div class="mt-10 flex flex-col space-y-4 px-4">
+    <a [routerLink]="['/layout']" routerLinkActive="bg-blue-600" class="flex items-center py-2 px-4 rounded hover:bg-gray-700">
+      <i class="fa-solid fa-house"></i>
+      <span class="ml-3">Dashboard</span>
+    </a>
+    <a [routerLink]="['/user-list']" routerLinkActive="bg-blue-600" class="flex items-center py-2 px-4 rounded hover:bg-gray-700">
+      <i class="fa-solid fa-user"></i>
+      <span class="ml-3">User-list</span>
+    </a>
+    <a [routerLink]="['/settings']" routerLinkActive="bg-blue-600" class="flex items-center py-2 px-4 rounded hover:bg-gray-700">
+      <i class="fa-solid fa-cog"></i>
+      <span class="ml-3">Settings</span>
+    </a>
+  </div>
+</div>
+
+<!-- Main Content Area (80% width) -->
+<div class="lg:w-4/5 w-full ml-auto bg-[#F6F6F6]">
+  <!-- Header with Logo and Title (Top fixed section) -->
+  <div class="sticky top-0 z-50 flex items-center justify-start px-6 py-4 bg-white shadow-md">
+    <img src="/assets/slack.svg" alt="Logo" class="h-8 w-8 object-cover mr-2" />
+    <span class="text-xl font-bold">User Management</span>
+  </div>
+
+  <!-- Router Outlet (Main Content) -->
+  <div class="p-6">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+</ng-container>
+
+<!-- Alerts Component -->
+<app-alerts></app-alerts>
