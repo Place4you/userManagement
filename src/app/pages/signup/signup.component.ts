@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ApiServiceService } from '../../services/api-service.service';
 import { Constant } from '../../core/Constant';
+import { AlertSrvService } from '../../services/alert-srv.service';
+
 
 @Component({
   selector: 'app-signup',
@@ -12,12 +14,15 @@ import { Constant } from '../../core/Constant';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
+
 export class SignupComponent {
   router = inject(Router);
   http = inject(HttpClient);
   userSrv = inject(ApiServiceService);
   errorMessage: string | null = null;
-  
+  isLoading:boolean = false;
+
+  constructor(private alertService:AlertSrvService){}
 
   newUserobj: any = {
     userId: 0,
@@ -35,6 +40,7 @@ export class SignupComponent {
           this.autoLogin();
         },
         error => {
+          
           this.errorMessage = 'Signup failed. Please try again.';
         }
       );
@@ -44,18 +50,22 @@ export class SignupComponent {
   }
 
   autoLogin() {
+    this.isLoading = true;
+
     const loginUser = {
       emailId: this.newUserobj.emailId,
-      Password: this.newUserobj.password
+      Password: this.newUserobj.Password
     };
+    setTimeout(('hello'),4000);
     this.userSrv.loginUser('/login', loginUser).subscribe(
       response => {
-        localStorage.setItem('loggedUser', JSON.stringify(response)); // Assuming response contains user details
-        alert('Login successful!');
-        this.router.navigateByUrl('/layout/add-header');
+        this.isLoading = false;
+        localStorage.setItem('loggedUser', JSON.stringify(response));
+        this.alertService.showSuccess('Login successful!');
+        this.router.navigateByUrl('/dashboard');
       },
       error => {
-        this.errorMessage = 'Login after signup failed. Please try logging in manually.';
+        this.alertService.showError('Login Failed. Invalid Details');
       }
     );
   }

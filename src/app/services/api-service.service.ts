@@ -17,6 +17,16 @@ export class ApiServiceService {
 
   }
 
+  addUser(url:string,data:any){
+    return this.http.post(`${Constant.ADD_USER}` +url, data);
+
+  }
+
+  upadteUser(url:string,data:any){
+    return this.http.post(`${Constant.UPDATE_USER}` +url, data);
+
+  }
+
   loginUser(url:string,data:{emailId:any, Password:any}){
     return this.http.post(`${Constant.API_URL}` +url, data);
   }

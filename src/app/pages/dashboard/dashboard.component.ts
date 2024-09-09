@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { TitleService } from '../../services/title.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,6 +8,12 @@ import { Component } from '@angular/core';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+
+  title: string="Latest Analytics";
+  constructor(private titlesrv:TitleService){}
+  ngOnInit(): void {
+    this.titlesrv.setTitle(this.title);
+  }
 
 }

@@ -34,13 +34,12 @@ export class LoginComponent {
       emailId: this.userObj.emailId,
       Password: this.userObj.Password
     };
-    setTimeout(('hello'),4000);
     this.userSrv.loginUser('/login', loginUser).subscribe(
       response => {
         this.isLoading = false;
         localStorage.setItem('loggedUser', JSON.stringify(response));
         this.alertService.showSuccess('Login successful!');
-        this.router.navigateByUrl('/user-list');
+        this.router.navigateByUrl('/dashboard');
       },
       error => {
         this.alertService.showError('Login Failed. Invalid Details');

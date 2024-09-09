@@ -19,11 +19,24 @@ export class LayoutComponent implements OnInit {
   isSticky: boolean = false;
   currentTitle: string | null = null;
   loggedInUserName :string = '';
+  openIndex: number | null = null;
+
+toggleDropdown(index: number) {
+  this.openIndex = this.openIndex === index ? null : index;
+}
 
   // Define navigation links in an array
     navLinks = [
       { path: '/dashboard', icon: 'fa-house', title: 'Dashboard' },
-      { path: '/user-list', icon: 'fa-user', title: 'User-list' },
+      { 
+        title: 'User Management', 
+        icon: 'fa-user', 
+        children: [
+          { path: '/user-list', title: 'All Users' },
+          { path: '/add-user', title: 'Add Student' },
+          { path: '/user/delete', title: 'Delete User' }
+        ] 
+      },
       { path: '/settings', icon: 'fa-cog', title: 'Settings' },
       { action: 'logout', icon: 'fa-right-from-bracket', title: 'Logout' } // Changed to action
     ];
@@ -31,16 +44,20 @@ export class LayoutComponent implements OnInit {
   constructor(private router: Router, private alertService: AlertSrvService, private titlesrv: TitleService) {
 
   }
+
   ngOnInit(): void {
+    // Username function
     this.getUserFromLocalStorage();
 
-
+    // Give Title to Service for this component
     this.titlesrv.title$.subscribe(title=>{
       this.currentTitle = title;
     })
   }
 
   private getUserFromLocalStorage(): void {
+     // Get name of user to display in Navbar
+
     const storedUser = localStorage.getItem('loggedUser');
     if (storedUser) {
       try {
@@ -54,6 +71,8 @@ export class LayoutComponent implements OnInit {
       this.loggedInUserName = 'Guest';
     }
   }
+
+  
   
 
   MobileMenu() {
@@ -75,6 +94,7 @@ export class LayoutComponent implements OnInit {
   }
 
   onLogout() {
+    // remove user info from localStorage
     localStorage.removeItem('loggedUser');
     this.alertService.showSuccess('Logout successful!');
     this.router.navigateByUrl('/login');

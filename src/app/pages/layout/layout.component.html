@@ -1,4 +1,4 @@
-<ng-container>
+<ng-container class="bg-gray-700">
   <!-- Mobile Nav (visible on mobile only) -->
   <nav [ngClass]="{'sticky-nav': isSticky}" class="flex lg:hidden justify-between items-center my-4 px-4 py-2 sticky top-0 left-0 w-full bg-white z-50 shadow-sm">
     <!-- Logo (Mobile) -->
@@ -9,46 +9,82 @@
 
     <!-- Hamburger Icon -->
     <div class="flex items-center">
-      <button (click)="MobileMenu()" [ngClass]="{ 'rotate-360': isMenuOpen }" class="text-2xl transition-transform duration-500 ease-in-out">
+      <button (click)="MobileMenu()" [ngClass]="{ 'rotate-360': isMenuOpen }" class="text-2xl transition-transform duration-500 ease-in-out animate-rotate">
         &#9776;
       </button>
     </div>
 
     <!-- Mobile Menu -->
-    <div *ngIf="isMenuOpen" class="fixed inset-0 bg-gray-900 text-white shadow-lg z-50">
-      <div class="flex flex-col h-full">
-        <!-- Header Section with Logo and Close Button -->
-        <div class="flex justify-between items-center p-4 border-b border-gray-200">
-          <!-- Logo (Mobile) -->
-          <a href="#hero" class="flex items-center gap-2">
-            <img class="object-cover h-8 w-8" src="/assets/slack.svg" alt="Logo">
-            <span class="text-[1rem] font-bold">User Management</span>
-          </a>
-      
-          <!-- Close Menu Icon -->
-          <button (click)="closeMenu()" class="text-2xl">
-            <i class="fa-solid fa-circle-xmark"></i>
-          </button>
+     @if(isMenuOpen)
+     {
+      <div class="fixed inset-0 bg-gray-900 text-white shadow-lg z-50"
+      [ngClass]="{
+        'animate-slideInFromRight': isAnimatingIn,
+        'animate-slideInToRight': !isAnimatingIn
+      }">
+        <div class="flex flex-col h-full">
+          <!-- Header Section with Logo and Close Button -->
+          <div class="flex justify-between items-center p-4 border-b border-gray-200">
+            <!-- Logo (Mobile) -->
+            <a href="#hero" class="flex items-center gap-2">
+              <img class="object-cover h-8 w-8" src="/assets/slack.svg" alt="Logo">
+              <span class="text-[1rem] font-bold">User Management</span>
+            </a>
+        
+            <!-- Close Menu Icon -->
+            <button (click)="closeMenu()" class="text-2xl">
+              <i class="fa-solid fa-circle-xmark"></i>
+            </button>
+          </div>
+        
+          <!-- Navigation Links (Mobile) -->
+          <div class="flex flex-col p-6 space-y-6 font-bold text-lg">
+            <ng-container *ngFor="let link of navLinks; let i = index">
+              <!-- Parent Links without children -->
+              @if(!link.children) {
+                <a 
+                  [routerLink]="[link.path]" 
+                  (click)="link.action === 'logout' ? onLogout() : null"
+                  routerLinkActive="bg-blue-600 text-white" 
+                  class="flex items-center py-2 px-4 rounded hover:bg-gray-700 transition-colors duration-300 ease-in-out"
+                >
+                  <i class="fa-solid" [ngClass]="link.icon"></i>
+                  <span class="ml-3">{{ link.title }}</span>
+                </a>
+              }
+          
+              <!-- Parent with Child Links -->
+              @if(link.children) {
+                <div>
+                  <a 
+                    (click)="toggleDropdown(i)" 
+                    class="flex items-center py-2 px-4 rounded hover:bg-gray-700 transition-colors duration-300 ease-in-out cursor-pointer"
+                  >
+                    <span class="ml-3">{{ link.title }}</span>
+                    <i class="ml-auto fa-solid" [ngClass]="openIndex === i ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true"></i>
+                  </a>
+                  <!-- Child Links -->
+                  @if(openIndex === i) {
+                    <div class="ml-6 mt-2 space-y-2 transition-all duration-300 ease-in-out">
+                      <a *ngFor="let child of link.children" 
+                        [routerLink]="[child.path]" 
+                        routerLinkActive="bg-gray-600 text-white" 
+                        class="block py-1 px-3 rounded hover:bg-gray-500 transition-colors duration-300 ease-in-out"
+                      >
+                        {{ child.title }}
+                      </a>
+                    </div>
+                  }
+                </div>
+              }
+            </ng-container>
+          </div>
+          
         </div>
-      
-        <!-- Navigation Links (Mobile) -->
-        <div class="flex flex-col p-6 space-y-6 font-bold text-lg ">
-          <a [routerLink]="['/layout']" routerLinkActive="bg-blue-600" class="flex items-center py-2 px-4 rounded hover:bg-gray-700">
-            <i class="fa-solid fa-house"></i>
-            <span class="ml-3">Dashboard</span>
-          </a>
-          <a [routerLink]="['/user-list']" routerLinkActive="bg-blue-600" class="flex items-center py-2 px-4 rounded hover:bg-gray-700">
-            <i class="fa-solid fa-user"></i>
-            <span class="ml-3">User-list</span>
-          </a>
-          <a [routerLink]="['/settings']" routerLinkActive="bg-blue-600" class="flex items-center py-2 px-4 rounded hover:bg-gray-700">
-            <i class="fa-solid fa-cog"></i>
-            <span class="ml-3">Settings</span>
-          </a>
-        </div>
+        
       </div>
-      
-    </div>
+     }
+
   </nav>
 
   <!-- Desktop Nav (visible on desktop only) -->
@@ -60,34 +96,64 @@
           <span class="text-2xl font-bold" style="font-size: 1.5rem">User Management</span>
         </div>
 
-        <!-- Navigation Links -->
-        <div class="mt-10 flex flex-col space-y-4 px-4">
-          <a 
-            *ngFor="let link of navLinks"
-            [routerLink]="[link.path]" 
-            (click)="link.action === 'logout' ? onLogout() : null"
-            routerLinkActive="bg-blue-600 text-white" 
-            [routerLinkActiveOptions]="{ exact: true }" 
-            class="flex items-center py-2 px-4 rounded hover:bg-gray-700 transition-colors duration-300 ease-in-out"
-          >
-            <i class="fa-solid" [ngClass]="link.icon"></i>
+<!-- Navigation Links -->
+<div class="mt-10 flex flex-col space-y-4 px-4">
+  <ng-container *ngFor="let link of navLinks; let i = index">
+    <!-- Parent Links without children -->
+     @if(!link.children)
+     {
+      <a 
+      [routerLink]="[link.path]" 
+      (click)="link.action === 'logout' ? onLogout() : null"
+      routerLinkActive="bg-blue-600 text-white" 
+      class="flex items-center py-2 px-4 rounded hover:bg-gray-700 transition-colors duration-300 ease-in-out"
+       >
+      <i class="fa-solid" [ngClass]="link.icon"></i>
+      <span class="ml-3">{{ link.title }}</span>
+      </a>
+     }
+
+    <!-- Parent with Child Links -->
+     @if(link.children)
+     {
+        <div>
+          <a (click)="toggleDropdown(i)" [class.] class="flex items-center py-2 px-4 rounded  hover:bg-gray-700 transition-colors duration-300 ease-in-out cursor-pointer">
             <span class="ml-3">{{ link.title }}</span>
+            <i class="ml-auto fa-solid" [ngClass]="openIndex === i ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true"></i> <!-- Toggle Icon -->
           </a>
+          <!-- Child Links -->
+          <div *ngIf="openIndex === i" class="ml-6 mt-2 space-y-2 transition-all duration-300 ease-in-out">
+            <a *ngFor="let child of link.children" 
+              [routerLink]="[child.path]" 
+              routerLinkActive="bg-gray-600 text-white" 
+              class="block py-1 px-3 rounded hover:bg-gray-500 transition-colors duration-300 ease-in-out">
+              {{ child.title }}
+            </a>
+          </div>
         </div>
+     }
+
+
+    
+  </ng-container>
+</div>
+
+
         
 </div>
 
 <!-- Main Content Area (80% width) -->
 <div class="flex-wrap lg:w-4/5 w-full ml-auto bg-[#F6F6F6]">
   <!-- Header with Logo and Title (Top fixed section) -->
-  <div class=" top-0 z-50 flex items-center justify-between px-6 py-4 bg-white shadow-md max-h-auto">
+  <div class=" top-0 z-50 flex  items-center justify-between px-6 py-4 bg-white shadow-md max-h-auto">
     <!-- Left Aligned Section -->
-    <div class="flex items-center space-x-4">
-      <h3 class="font-bold font-gilroy text-lg">Here is your {{ currentTitle }}</h3>
+    <div class="flex  items-center space-x-4">
+      <h3 class="font-bold font-gilroy  text-lg">Here is your <span class="pl-1 text-blue-400">{{ currentTitle }}</span> </h3>
     </div>
     
+
     <!-- Right Aligned Section -->
-    <div class="flex items-center space-x-8">
+    <div class="md:flex hidden  items-center space-x-8">
       <!-- Logged-in User Name -->
       <div class="text-sm font-medium">
         <span class="font-gilroy font-semibold"> {{ loggedInUserName }}</span>
@@ -105,7 +171,7 @@
   
 
   <!-- Router Outlet (Main Content) -->
-  <div class="p-6">
+  <div class="p-2 sm:p-6">
     <router-outlet></router-outlet>
   </div>
 </div>

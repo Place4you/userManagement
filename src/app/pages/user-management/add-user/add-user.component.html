@@ -1,0 +1,62 @@
+<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-semibold text-center mb-6">Add New Student</h2>
+    <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Username -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700" for="userName">Username</label>
+        <input id="userName" type="text" formControlName="userName" class="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        @if(addUserForm.get('userName')?.invalid && addUserForm.get('userName')?.touched){
+            <div  class="text-red-500 text-sm">Username is required</div>
+        }
+      </div>
+  
+      <!-- Email -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700" for="emailId">Email</label>
+        <input id="emailId" type="email" formControlName="emailId" class="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        
+        @if(addUserForm.get('emailId')?.invalid && addUserForm.get('emailId')?.touched){
+            <div  class="text-red-500 text-sm">Valid email is required</div>
+        }
+      </div>
+  
+      <!-- Full Name -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700" for="fullName">Full Name</label>
+        <input id="fullName" type="text" formControlName="fullName" class="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      
+        @if(addUserForm.get('fullName')?.invalid && addUserForm.get('fullName')?.touched){
+            <div  class="text-red-500 text-sm">Full name is required</div>
+        }
+       </div>
+  
+      <!-- Password -->
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700" for="password">Password</label>
+        <input id="password" type="password" formControlName="password" class="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      
+        @if(addUserForm.get('password')?.invalid && addUserForm.get('password')?.touched){
+            <div  class="text-red-500 text-sm">Password must be at least 6 characters</div>
+        }
+
+      </div>
+  
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none" [disabled]="addUserForm.invalid">
+            @if(isLoading){
+                <div class="flex justify-center items-center flex-row gap-2">
+                  <div class="w-4 h-4 rounded-full bg-white animate-bounce"></div>
+                  <div class="w-4 h-4 rounded-full bg-white animate-bounce [animation-delay:-.3s]"></div>
+                  <div class="w-4 h-4 rounded-full bg-white animate-bounce [animation-delay:-.5s]"></div>
+                </div>
+              }
+              @if(!isLoading){
+                Add Student
+            }
+        </button>
+      </div>
+    </form>
+  </div>
+  
