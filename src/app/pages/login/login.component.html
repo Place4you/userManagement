@@ -37,14 +37,14 @@
           
                   <form (ngSubmit)="onApiLogin()">
                     <div class="mb-3">
-                      <label for="email" class="block mb-2 text-sm text-gray-600">Email address</label>
+                      <label for="username" class="block mb-2 text-sm text-gray-600">Username</label>
                       <input
-                        type="email"
+                        type="username"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-                        [(ngModel)]="userObj.emailId"
-                        name="emailId"
-                        id="email"
-                        placeholder="Enter email"
+                        [(ngModel)]="userObj.Username"
+                        name="username"
+                        id="username"
+                        placeholder="Enter Username"
                         required
                       />
                     </div>

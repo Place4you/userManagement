@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Constant } from '../core/Constant';
 import { Observable } from 'rxjs';
+import { ILoginResponse } from '../core/Interface/ILoginResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,13 @@ export class ApiServiceService {
 
   }
 
-  loginUser(url:string,data:{emailId:any, Password:any}){
-    return this.http.post(`${Constant.API_URL}` +url, data);
+  // loginUser(data: { emailId: string; Password: string }):Observable<ILoginResponse>
+  // {
+  //   return this.http.post(`${Constant.LOGIN_URL}`, data);
+  // }
+
+  loginUser(data: { userName: string; password: string }): Observable<ILoginResponse> {
+    return this.http.post<ILoginResponse>(`${Constant.LOGIN_URL}`, data);
   }
 
   getallapi(url: string): Observable<{ data: IUser[] }> {

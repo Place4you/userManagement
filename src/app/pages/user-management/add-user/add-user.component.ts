@@ -47,11 +47,10 @@ export class AddUserComponent implements OnInit {
 
       this.http.post(Constant.ADD_USER, userPayload).subscribe(
         response => {
-          debugger;
+          this.isLoading= false;
           this.alertService.showSuccess('New Student ADDED successfuly!');
         },
         error => {
-          debugger;
           this.isLoading= false;
           this.alertService.showError('Failed! Check Again');
         }

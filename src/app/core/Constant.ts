@@ -1,5 +1,6 @@
 export const Constant = {
     API_URL: 'https://projectapi.gerasim.in/api/UserApp/',
+    LOGIN_URL: 'https://projectapi.gerasim.in/api/OnlineLearning/login',
     SIGNUP_URL: 'https://projectapi.gerasim.in/api/UserApp/CreateNewUser',
     ADD_USER:'https://projectapi.gerasim.in/api/OnlineLearning/AddNewUser',
     UPDATE_USER: 'https://projectapi.gerasim.in/api/OnlineLearning/UpdateUser',

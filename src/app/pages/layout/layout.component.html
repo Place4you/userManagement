@@ -97,46 +97,46 @@
         </div>
 
 <!-- Navigation Links -->
-<div class="mt-10 flex flex-col space-y-4 px-4">
-  <ng-container *ngFor="let link of navLinks; let i = index">
-    <!-- Parent Links without children -->
-     @if(!link.children)
-     {
-      <a 
-      [routerLink]="[link.path]" 
-      (click)="link.action === 'logout' ? onLogout() : null"
-      routerLinkActive="bg-blue-600 text-white" 
-      class="flex items-center py-2 px-4 rounded hover:bg-gray-700 transition-colors duration-300 ease-in-out"
-       >
-      <i class="fa-solid" [ngClass]="link.icon"></i>
-      <span class="ml-3">{{ link.title }}</span>
-      </a>
-     }
-
-    <!-- Parent with Child Links -->
-     @if(link.children)
-     {
-        <div>
-          <a (click)="toggleDropdown(i)" [class.] class="flex items-center py-2 px-4 rounded  hover:bg-gray-700 transition-colors duration-300 ease-in-out cursor-pointer">
-            <span class="ml-3">{{ link.title }}</span>
-            <i class="ml-auto fa-solid" [ngClass]="openIndex === i ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true"></i> <!-- Toggle Icon -->
+    <div class="mt-10 flex flex-col space-y-4 px-4">
+      <ng-container *ngFor="let link of navLinks; let i = index">
+        <!-- Parent Links without children -->
+        @if(!link.children)
+        {
+          <a 
+          [routerLink]="[link.path]" 
+          (click)="link.action === 'logout' ? onLogout() : null"
+          routerLinkActive="bg-blue-600 text-white" 
+          class="flex items-center py-2 px-4 rounded hover:bg-gray-700 transition-colors duration-300 ease-in-out"
+          >
+          <i class="fa-solid" [ngClass]="link.icon"></i>
+          <span class="ml-3">{{ link.title }}</span>
           </a>
-          <!-- Child Links -->
-          <div *ngIf="openIndex === i" class="ml-6 mt-2 space-y-2 transition-all duration-300 ease-in-out">
-            <a *ngFor="let child of link.children" 
-              [routerLink]="[child.path]" 
-              routerLinkActive="bg-gray-600 text-white" 
-              class="block py-1 px-3 rounded hover:bg-gray-500 transition-colors duration-300 ease-in-out">
-              {{ child.title }}
-            </a>
-          </div>
-        </div>
-     }
+        }
+
+        <!-- Parent with Child Links -->
+        @if(link.children)
+        {
+            <div>
+              <a (click)="toggleDropdown(i)" [class.] class="flex items-center py-2 px-4 rounded  hover:bg-gray-700 transition-colors duration-300 ease-in-out cursor-pointer">
+                <span class="ml-3">{{ link.title }}</span>
+                <i class="ml-auto fa-solid" [ngClass]="openIndex === i ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true"></i> <!-- Toggle Icon -->
+              </a>
+              <!-- Child Links -->
+              <div *ngIf="openIndex === i" class="ml-6 mt-2 space-y-2 transition-all duration-300 ease-in-out">
+                <a *ngFor="let child of link.children" 
+                  [routerLink]="[child.path]" 
+                  routerLinkActive="bg-gray-600 text-white" 
+                  class="block py-1 px-3 rounded hover:bg-gray-500 transition-colors duration-300 ease-in-out">
+                  {{ child.title }}
+                </a>
+              </div>
+            </div>
+        }
 
 
-    
-  </ng-container>
-</div>
+        
+      </ng-container>
+    </div>
 
 
         

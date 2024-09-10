@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ApiServiceService } from '../../services/api-service.service';
 import { Constant } from '../../core/Constant';
 import { AlertSrvService } from '../../services/alert-srv.service';
-
+import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'app-signup',
@@ -22,7 +22,7 @@ export class SignupComponent {
   errorMessage: string | null = null;
   isLoading:boolean = false;
 
-  constructor(private alertService:AlertSrvService){}
+  constructor(private alertService:AlertSrvService, private login:LoginComponent){}
 
   newUserobj: any = {
     userId: 0,
@@ -37,7 +37,8 @@ export class SignupComponent {
         response => {
           alert('Signup successful!');
           localStorage.setItem('signupUser', JSON.stringify(this.newUserobj));
-          this.autoLogin();
+          this.login.onApiLogin();
+
         },
         error => {
           
@@ -49,24 +50,5 @@ export class SignupComponent {
     }
   }
 
-  autoLogin() {
-    this.isLoading = true;
 
-    const loginUser = {
-      emailId: this.newUserobj.emailId,
-      Password: this.newUserobj.Password
-    };
-    setTimeout(('hello'),4000);
-    this.userSrv.loginUser('/login', loginUser).subscribe(
-      response => {
-        this.isLoading = false;
-        localStorage.setItem('loggedUser', JSON.stringify(response));
-        this.alertService.showSuccess('Login successful!');
-        this.router.navigateByUrl('/dashboard');
-      },
-      error => {
-        this.alertService.showError('Login Failed. Invalid Details');
-      }
-    );
-  }
 }

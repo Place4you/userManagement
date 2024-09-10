@@ -11,9 +11,11 @@ import { TitleService } from '../../services/title.service';
 export class DashboardComponent implements OnInit {
 
   title: string="Latest Analytics";
-  constructor(private titlesrv:TitleService){}
-  ngOnInit(): void {
+  constructor(private titlesrv:TitleService){
     this.titlesrv.setTitle(this.title);
+
+  }
+  ngOnInit(): void {
   }
 
 }

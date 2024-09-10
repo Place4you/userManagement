@@ -1,3 +1,4 @@
+import { ILoginResponse } from './../../core/Interface/ILoginResponse';
 import { AlertsComponent } from './../../core/reuseable components/alerts/alerts.component';
 import { Component, inject, ViewChild, viewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
@@ -17,53 +18,45 @@ import { AlertSrvService } from '../../services/alert-srv.service';
 export class LoginComponent {
 
   userObj: any = {
-    emailId: '',
+    Username: '',
     Password: ''
   };
-  loginurl = "/login";
   login:boolean=true;
   errorMessage: string | null = null;
   isLoading:boolean = false;
 
-  constructor(private userSrv: ApiServiceService, private router: Router, private alertService: AlertSrvService) {}
+  constructor(private apiService: ApiServiceService, private router: Router, private alertService: AlertSrvService) {}
 
   onApiLogin() {
     this.isLoading = true;
 
     const loginUser = {
-      emailId: this.userObj.emailId,
-      Password: this.userObj.Password
+      userName: this.userObj.Username,
+      password: this.userObj.Password
     };
-    this.userSrv.loginUser('/login', loginUser).subscribe(
-      response => {
+    this.apiService.loginUser(loginUser).subscribe(
+      (response: ILoginResponse) => {  // Use the ILoginResponse interface here
         this.isLoading = false;
-        localStorage.setItem('loggedUser', JSON.stringify(response));
-        this.alertService.showSuccess('Login successful!');
-        this.router.navigateByUrl('/dashboard');
+  
+        // Check if 'result' is true
+        if (response.result) {
+          localStorage.setItem('loggedUser', JSON.stringify(response.data));  // Store the user data, not the entire response
+          this.alertService.showSuccess('Login successful!');
+          this.router.navigateByUrl('/dashboard');
+        } else {
+          // Show error message from the response
+          this.alertService.showError(response.message || 'Login failed. Invalid credentials.');
+        }
       },
       error => {
-        this.alertService.showError('Login Failed. Invalid Details');
+        this.isLoading = false;
+        // Handle any errors from the API
+        this.alertService.showError('Login Failed. Please try again.');
       }
     );
   }
 
-  // onHardLogin() {
-  //   const loginUser = {
-  //     emailId: this.userObj.emailId,
-  //     Password: this.userObj.Password
-  //   };
-  //   if (loginUser.emailId === 'sadi' && loginUser.Password === '123') {
-  //     const userData = {
-  //       user: loginUser.emailId,
-  //       pass: loginUser.Password
-  //     };
-  //     localStorage.setItem('data', JSON.stringify(userData));
-  //     this.router.navigateByUrl('/layout/user-list');
-  //     alert('Login successful!');
-  //   } else {
-  //     alert('Login after signup failed. Please try logging in manually.');
-  //   }
-  // }
+
   }
       
 
