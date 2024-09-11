@@ -34,7 +34,14 @@ toggleDropdown(index: number) {
         children: [
           { path: '/user-list', title: 'All Users' },
           { path: '/add-user', title: 'Add Student' },
-          { path: '/user/delete', title: 'Delete User' }
+        ] 
+      },
+      { 
+        title: 'Video Management', 
+        icon: 'fa-media', 
+        children: [
+          { path: '/video-list', title: 'Video List' },
+          { path: '/add-video', title: 'Add Video' },
         ] 
       },
       { path: '/settings', icon: 'fa-cog', title: 'Settings' },

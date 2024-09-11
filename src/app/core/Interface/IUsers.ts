@@ -7,4 +7,3 @@ export interface IUser {
     projectName: string;
     createdDate: string;
   }
-  

@@ -7,6 +7,9 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
 import { AddUserComponent } from './pages/user-management/add-user/add-user.component';
+import { VideoManagementComponent } from './pages/video-management/video-management.component';
+import { VideoListComponent } from './pages/video-management/video-list/video-list.component';
+import { AddVideoComponent } from './pages/video-management/add-video/add-video.component';
 
 export const routes: Routes = [
     {
@@ -41,6 +44,20 @@ export const routes: Routes = [
                     {
                         path:'add-user',
                         component: AddUserComponent
+                    },
+                ]
+            },
+            {
+                path:'',
+                component:VideoManagementComponent,
+                children:[
+                    {
+                        path:'video-list',
+                        component: VideoListComponent
+                    },
+                    {
+                        path:'add-video',
+                        component: AddVideoComponent
                     },
                 ]
             },
