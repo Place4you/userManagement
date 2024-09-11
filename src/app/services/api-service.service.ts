@@ -49,6 +49,10 @@ export class ApiServiceService {
     return this.http.get<{ data: IVideo[]}>(url);
   }
 
+  addVideo(url:string,data:any){
+    return this.http.post(`${Constant.ADD_VIDEO}` +url, data);
+  }
+
 
 
 }

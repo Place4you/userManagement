@@ -1,1 +1,48 @@
-<p>add-video works!</p>
+<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-semibold text-center mb-6">Add New Video</h2>
+    <form [formGroup]="addVideoForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Video Title -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700" for="videoTitle">Video Title</label>
+        <input id="videoTitle" type="text" formControlName="videoTitle" class="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        @if(addVideoForm.get('videoTitle')?.invalid && addVideoForm.get('videoTitle')?.touched) {
+          <div class="text-red-500 text-sm">Video Title is required</div>
+        }
+      </div>
+  
+      <!-- Video Description -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700" for="videoDescription">Video Description</label>
+        <textarea id="videoDescription" formControlName="videoDescription" class="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        @if(addVideoForm.get('videoDescription')?.invalid && addVideoForm.get('videoDescription')?.touched) {
+          <div class="text-red-500 text-sm">Video Description is required</div>
+        }
+      </div>
+  
+      <!-- Total Duration -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700" for="totalDuration">Total Duration</label>
+        <input id="totalDuration" type="text" formControlName="totalDuration" class="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        @if(addVideoForm.get('totalDuration')?.invalid && addVideoForm.get('totalDuration')?.touched) {
+          <div class="text-red-500 text-sm">Total Duration is required</div>
+        }
+      </div>
+  
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none" [disabled]="addVideoForm.invalid">
+          @if(isLoading) {
+            <div class="flex justify-center items-center flex-row gap-2">
+              <div class="w-4 h-4 rounded-full bg-white animate-bounce"></div>
+              <div class="w-4 h-4 rounded-full bg-white animate-bounce [animation-delay:-.3s]"></div>
+              <div class="w-4 h-4 rounded-full bg-white animate-bounce [animation-delay:-.5s]"></div>
+            </div>
+          } @else {
+            Add Video
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+  

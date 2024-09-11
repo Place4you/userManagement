@@ -6,18 +6,31 @@ import { Constant } from '../../../core/Constant';
 import { HttpClient } from '@angular/common/http';
 import { IVideo } from '../../../core/Interface/IVideo';
 import { NgFor } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-video-list',
   standalone: true,
-  imports: [ NgFor],
+  imports: [ NgFor, NgxPaginationModule],
   templateUrl: './video-list.component.html',
   styleUrl: './video-list.component.css'
 })
 export class VideoListComponent implements OnInit {
 
-  constructor(private apisrc: ApiServiceService, private titlesrv: TitleService, private alertService:AlertSrvService) {}
-  
+  constructor(private apisrc: ApiServiceService, private titlesrv: TitleService, private alertService:AlertSrvService) 
+  {
+        // Set items per page based on screen size
+        this.itemsPerPage = window.innerWidth <= 640 ? 5 : 9; // 5 for mobile, 9 for desktop
+        window.addEventListener('resize', this.onResize.bind(this)); // Update on resize
+  }
+
+  p: number = 1; // Current page
+  itemsPerPage: number;
+
+  onResize(): void {
+    this.itemsPerPage = window.innerWidth <= 640 ? 5 : 9; // Adjust based on screen size
+  }
+
   title: string="Video list";
   false:boolean= false;
   errorMessage: string | null = null;
@@ -34,16 +47,20 @@ export class VideoListComponent implements OnInit {
       this.titlesrv.setTitle(this.title);
     }
 
-    // Fetch user data
+  // Fetch video data
     getAllVideos() {
       this.loading = true;
       this.apisrc.getallvideos(Constant.GET_VIDEO).subscribe(
         (res: { data: IVideo[] }) => {
           this.videoInfo = res.data;
-          // Assign random YouTube URLs to each video
+          
+          // Assign random YouTube URLs and thumbnails to each video
           this.videoInfo.forEach((video) => {
-              video.videoUrl = this.getRandomYouTubeVideo();
-              });
+            const { videoUrl, videoThumbnail } = this.getRandomYouTubeVideo();
+            video.videoUrl = videoUrl;
+            video.videoThumbnail = videoThumbnail;
+          });
+
           this.errorMessage = null;
           this.loading = false;
         },
@@ -53,6 +70,7 @@ export class VideoListComponent implements OnInit {
         }
       );
     }
+
 
   // Function to enable editing for the selected row
   // editRow(index: number) {
@@ -86,23 +104,47 @@ export class VideoListComponent implements OnInit {
 
 
 
-// Random youtube video
-  getRandomYouTubeVideo(): string {
+// Random youtube video and thumnail
+  getRandomYouTubeVideo(): { videoUrl: string, videoThumbnail: string } {
     const videoIds = [
-      'dQw4w9WgXcQ', // Example YouTube video ID
-      '9bZkp7q19f0',
-      '3JZ_D3ELwOQ',
-      'eVTXPUF4Oz4',
-      'kJQP7kiw5Fk'
+      'rfscVS0vtbw', // Learn Python - Full Course for Beginners [Tutorial]
+      'PkZNo7MFNFg', // Learn JavaScript - Full Course for Beginners
+      'f02mOEt11OQ', // Learn React JS - Full Course for Beginners - Tutorial 2019
+      'UB1O30fR-EE', // Learn HTML5 and CSS3 From Scratch - Full Course
+      'Q33KBiDriJY', // Learn Java 8 - Full Tutorial for Beginners
+      'jS4aFq5-91M', // Learn C++ - Full Course for Beginners - Tutorial 2019
+      'pKd0Rpw7O48', // Learn SQL in 1 Hour - SQL Basics for Beginners
+      'u62xhKq5kSE', // Learn Node.js - Full Tutorial for Beginners
+      'zOjov-2OZ0E', // Learn Python OOP - Object Oriented Programming
+      'Z1Yd7upQsXY', // Learn Data Structures and Algorithms with Python
+      'HhGIWf2ROaE', // Learn Git In 15 Minutes
+      '3JluqTojuME', // Learn Docker in 7 Easy Steps - Full Beginner's Tutorial
+      '8aGhZQkoFbQ', // Learn JavaScript Promises (Pt.1)
+      'Oe421EPjeBE', // Learn TypeScript in 50 Minutes - A Beginner's Guide
+      'kUMe1FH4CHE', // Learn Python Flask - Full Tutorial for Beginners
+      'u6gSSpfsoOQ', // Learn Django - Full Course for Beginners
+      'fBNz5xF-Kx4', // Learn Express.js - Full Course for Beginners
+      'yfoY53QXEnI', // Learn CSS Grid in 20 Minutes
+      '1Rs2ND1ryYc', // Learn Flexbox in 15 Minutes
+      'W6NZfCO5SIk'  // Learn JavaScript in 12 Minutes
     ];
-  
+    
+    
+
     // Generate a random index to select a video ID
     const randomIndex = Math.floor(Math.random() * videoIds.length);
-  
-    // Construct YouTube video URL
-    const youtubeUrl = `https://www.youtube.com/watch?v=${videoIds[randomIndex]}`;
-    return youtubeUrl;
+    const selectedVideoId = videoIds[randomIndex];
+
+    // Construct YouTube video URL and thumbnail URL
+    const youtubeUrl = `https://www.youtube.com/watch?v=${selectedVideoId}`;
+    const videoThumbnail = `https://img.youtube.com/vi/${selectedVideoId}/mqdefault.jpg`;
+
+    return {
+      videoUrl: youtubeUrl,
+      videoThumbnail: videoThumbnail
+    };
   }
+
 
 
   // `trackBy` function to optimize rendering

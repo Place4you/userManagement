@@ -3,6 +3,16 @@
 @tailwind utilities;
 /* You can add global styles to this file, and also import other style files */
 
+/* video-list.component.css */
+.pagination {
+     display: flex;
+     justify-content: center;
+   }
+   
+   .pagination-controls {
+     margin-top: 20px;
+   }
+   
 /* From Uiverse.io by SchawnnahJ */ 
 .loader {
     position: relative;

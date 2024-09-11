@@ -1,43 +1,48 @@
 <div class="container overflow-x-scroll w-full sm:px-16 px-6 mt-5">
-    <!-- Video Lists Table -->
-    <div class="mt-3 border-gray-900 border-2 rounded-xl shadow-lg">
-      <h2 class="p-4 bg-gray-800 text-white font-medium rounded-t-lg">Video Lists</h2>
-  
-      <!-- Loading Spinner -->
-      @if(loading){
-        <div class="flex justify-center items-center mt-3">
-          <div class="loader"></div>
-        </div>
-      }
-  
-      <!-- Video Grid -->
-      @if(!loading){
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+  <!-- Video Lists Table -->
+  <div class="mt-3 border-gray-900 border-2 rounded-xl shadow-lg">
+    <h2 class="p-4 bg-gray-800 text-white font-medium rounded-t-lg">Video Lists</h2>
+
+    <!-- Loading Spinner -->
+    @if(loading){
+      <div class="flex justify-center items-center mt-3">
+        <div class="loader"></div>
+      </div>
+    }
+
+    <!-- Video Grid -->
+    @if(!loading){
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6 overflow-x-hidden">
           <div
-            *ngFor="let video of videoInfo; let i = index; trackBy: trackById"
-            class="max-w-sm bg-white rounded-lg shadow-md overflow-hidden">
-              <div class="max-w-2xl overflow-hidden bg-white rounded-lg shadow-md">
-                  <img class="object-cover w-full h-64" [src]="video.videoThumbnail" alt="Video Thumbnail">
-                  <div class="p-6">
-                      <h2 class="text-xl font-semibold">{{ video.videoTitle }}</h2>
-                      <p class="mt-2 text-sm text-gray-600">{{ video.videoDescription }}</p>
-                      <p class="mt-2 text-sm text-gray-600">Duration: {{ video.totalDuration }}</p>
-                      <a [href]="video.videoUrl" target="_blank" class="text-blue-500 hover:underline">
+            *ngFor="let video of videoInfo | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index; trackBy: trackById"
+            class="relative max-w-sm bg-white rounded-lg shadow-md overflow-hidden">
+              <div class="transition-shadow duration-300 ease-in-out hover:shadow-2xl hover:border-2 hover:border-gray-700">
+                <img class="object-contain w-full h-64" [src]="video.videoThumbnail" alt="Video Thumbnail">
+                <div class="p-6 rounded-md">
+                    <h2 class="text-xl font-semibold">{{ video.videoTitle }}</h2>
+                    <p class="mt-2 text-sm text-gray-600">{{ video.videoDescription }}</p>
+                    <p class="mt-2 text-sm text-gray-600">Duration: {{ video.totalDuration }}</p>
+                    <button class="my-2 px-3 py-2 bg-blue-500 rounded-md shadow-md text-white font-bold">
+                      <a [href]="video.videoUrl" target="_blank" class="hover:underline">
                           Watch Video
                       </a>
-                  </div>
+                    </button>
+                </div>
               </div>
           </div>
-        </div>
-      }
+      </div>
       
-  
-      <!-- No Data Found -->
-      @if(!loading && videoInfo.length === 0){
-        <div class="text-center py-4 text-gray-500">
-          No Videos Found
-        </div>
-      }
-    </div>
+      <!-- Pagination Controls -->
+      <div class="flex justify-center mt-6">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    }
+
+    <!-- No Data Found -->
+    @if(!loading && videoInfo.length === 0){
+      <div class="text-center py-4 text-gray-500">
+        No Videos Found
+      </div>
+    }
   </div>
-  
+</div>
