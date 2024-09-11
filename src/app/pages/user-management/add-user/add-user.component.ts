@@ -49,10 +49,14 @@ export class AddUserComponent implements OnInit {
         response => {
           this.isLoading= false;
           this.alertService.showSuccess('New Student ADDED successfuly!');
+          this.alertService.clear();
+
         },
         error => {
           this.isLoading= false;
           this.alertService.showError('Failed! Check Again');
+          this.alertService.clear();
+
         }
       );
     }

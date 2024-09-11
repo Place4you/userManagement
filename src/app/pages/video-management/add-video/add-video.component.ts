@@ -53,11 +53,15 @@ export class AddVideoComponent implements OnInit {
           
           this.isLoading = false;
           this.alertService.showSuccess('New Video Added Successfully!');
+          this.alertService.clear();
+
         },
         error => {
           
           this.isLoading = false;
           this.alertService.showError('Failed to Add Video. Please Check Again.');
+          this.alertService.clear();
+
         }
       );
     }

@@ -104,6 +104,7 @@ toggleDropdown(index: number) {
     // remove user info from localStorage
     localStorage.removeItem('loggedUser');
     this.alertService.showSuccess('Logout successful!');
+    this.alertService.clear();
     this.router.navigateByUrl('/login');
   }
 

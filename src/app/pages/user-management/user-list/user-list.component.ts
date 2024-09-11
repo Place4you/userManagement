@@ -41,13 +41,15 @@ export class UserListComponent implements OnInit {
     
     this.http.post(Constant.UPDATE_USER, updatedUser).subscribe(
       response => {
-        debugger;
         this.alertService.showSuccess('New Student ADDED successfuly!');
+        this.alertService.clear();
+
       },
       error => {
-        debugger;
         this.false= false;
         this.alertService.showError('Failed! Check Again');
+        this.alertService.clear();
+
       }
     );
     console.log('Updated User:', updatedUser);
