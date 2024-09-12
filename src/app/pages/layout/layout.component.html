@@ -56,10 +56,9 @@
               <!-- Parent with Child Links -->
               @if(link.children) {
                 <div>
-                  <a 
-                    (click)="toggleDropdown(i)" 
-                    class="flex items-center py-2 px-4 rounded hover:bg-gray-700 transition-colors duration-300 ease-in-out cursor-pointer"
-                  >
+                  <a  (click)="toggleDropdown(i)" 
+                    class="flex items-center py-2 px-4 rounded hover:bg-gray-700 transition-colors duration-300 ease-in-out cursor-pointer">
+
                     <span class="ml-3">{{ link.title }}</span>
                     <i class="ml-auto fa-solid" [ngClass]="openIndex === i ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true"></i>
                   </a>
@@ -71,7 +70,8 @@
                         routerLinkActive="bg-gray-600 text-white" 
                         class="block py-1 px-3 rounded hover:bg-gray-500 transition-colors duration-300 ease-in-out"
                       >
-                        {{ child.title }}
+                        <i class="fa-solid" [ngClass]="link.icon"></i>
+                        <span class="ml-3">{{ child.title }}</span>
                       </a>
                     </div>
                   }
@@ -148,7 +148,7 @@
   <div class=" top-0 z-50 flex  items-center justify-between px-6 py-4 bg-white shadow-md max-h-auto">
     <!-- Left Aligned Section -->
     <div class="flex  items-center space-x-4">
-      <h3 class="font-bold font-gilroy  text-lg">Here is your <span class="pl-1 text-blue-400">{{ currentTitle }}</span> </h3>
+      <h3 class="font-bold font-gilroy  text-lg">Here is your <span class="pl-1 text-blue-400">{{ titlesrv.titleSubject() }}</span> </h3>
     </div>
     
 

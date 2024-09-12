@@ -44,7 +44,7 @@ export class LoginComponent {
         if (response.result) {
           localStorage.setItem('loggedUser', JSON.stringify(response.data));  // Store the user data, not the entire response
           this.alertService.showSuccess('Login successful!');
-          this.alertService.clear();
+          this.login= false;
           this.router.navigateByUrl('/dashboard');
         } else {
           // Show error message from the response
@@ -55,10 +55,12 @@ export class LoginComponent {
         this.isLoading = false;
         // Handle any errors from the API
         this.alertService.showError('Login Failed. Please try again.');
-        this.alertService.clear();
 
       }
+
     );
+    this.alertService.clear();
+
   }
 
 

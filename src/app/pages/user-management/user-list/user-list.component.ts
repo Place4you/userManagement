@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
@@ -14,17 +14,25 @@ import { AlertSrvService } from '../../../services/alert-srv.service';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'] // Corrected this to `styleUrls`
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent implements OnInit, OnDestroy {
 
   constructor(private apisrc: ApiServiceService, private titlesrv: TitleService, private alertService:AlertSrvService) {}
   
   title: string="User list of all users.";
+  titlenew = signal<string>('');
   false:boolean= false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
   loading: boolean = false;
   update: boolean = false;
   editableRow: number | null = null; // To track the row being edited
+
+  ngOnInit() {
+    this.getAllUsers();
+    this.titlesrv.setTitle(this.title);
+
+  }
+
   // Function to enable editing for the selected row
   editRow(index: number) {
     this.editableRow = index;
@@ -42,13 +50,11 @@ export class UserListComponent implements OnInit {
     this.http.post(Constant.UPDATE_USER, updatedUser).subscribe(
       response => {
         this.alertService.showSuccess('New Student ADDED successfuly!');
-        this.alertService.clear();
 
       },
       error => {
         this.false= false;
         this.alertService.showError('Failed! Check Again');
-        this.alertService.clear();
 
       }
     );
@@ -62,11 +68,7 @@ export class UserListComponent implements OnInit {
 
   http = inject(HttpClient);
 
-  ngOnInit() {
-    this.getAllUsers();
-    this.titlesrv.setTitle(this.title);
 
-  }
 
   // Fetch user data
   getAllUsers() {
@@ -88,5 +90,9 @@ export class UserListComponent implements OnInit {
   // `trackBy` function to optimize rendering
   trackById(index: number, user: IUser) {
     return user.userId; // Assumes `userId` is the unique identifier
+  }
+
+  ngOnDestroy(){
+    this.alertService.clear();
   }
 }

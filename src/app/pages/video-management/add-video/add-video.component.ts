@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { TitleService } from '../../../services/title.service';
@@ -12,7 +12,7 @@ import { Constant } from '../../../core/Constant';
   templateUrl: './add-video.component.html',
   styleUrl: './add-video.component.css'
 })
-export class AddVideoComponent implements OnInit {
+export class AddVideoComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   addVideoForm!: FormGroup;
   title: string = 'Add New Video';
@@ -53,17 +53,18 @@ export class AddVideoComponent implements OnInit {
           
           this.isLoading = false;
           this.alertService.showSuccess('New Video Added Successfully!');
-          this.alertService.clear();
 
         },
         error => {
           
           this.isLoading = false;
           this.alertService.showError('Failed to Add Video. Please Check Again.');
-          this.alertService.clear();
 
         }
       );
     }
+  }
+  ngOnDestroy(){
+    this.alertService.clear();
   }
 }

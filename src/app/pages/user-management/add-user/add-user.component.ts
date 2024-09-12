@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule , Validators } from '@angular/forms';
 import { Constant } from '../../../core/Constant';
 import { AlertsComponent } from "../../../core/reuseable components/alerts/alerts.component";
@@ -13,7 +13,7 @@ import { AlertSrvService } from '../../../services/alert-srv.service';
   templateUrl: './add-user.component.html',
   styleUrl: './add-user.component.css'
 })
-export class AddUserComponent implements OnInit {
+export class AddUserComponent implements OnInit, OnDestroy {
   isLoading:boolean=false;
   addUserForm!: FormGroup;
   title:string='Form to Add Student';
@@ -49,16 +49,17 @@ export class AddUserComponent implements OnInit {
         response => {
           this.isLoading= false;
           this.alertService.showSuccess('New Student ADDED successfuly!');
-          this.alertService.clear();
 
         },
         error => {
           this.isLoading= false;
           this.alertService.showError('Failed! Check Again');
-          this.alertService.clear();
 
         }
       );
     }
+  }
+  ngOnDestroy(){
+    this.alertService.clear();
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -6,11 +6,12 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class TitleService {
 
-  private titleSubject = new BehaviorSubject<string | null>(null);
-  title$ = this.titleSubject.asObservable();
+  // private titleSubject = new BehaviorSubject<string | null>(null);
+  // title$ = this.titleSubject.asObservable();
 
+  public titleSubject = signal<string>('');
   setTitle(title: string): void {
-    this.titleSubject.next(title);
+    this.titleSubject.set(title);
   }
 
 }

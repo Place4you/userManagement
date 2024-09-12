@@ -6,6 +6,7 @@ import { AlertSrvService } from '../../services/alert-srv.service';
 import { AlertsComponent } from "../../core/reuseable components/alerts/alerts.component";
 import { TitleService } from '../../services/title.service';
 import { DashboardComponent } from '../dashboard/dashboard.component';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-layout',
   standalone: true,
@@ -17,7 +18,7 @@ export class LayoutComponent implements OnInit {
   isMenuOpen: boolean = false;
   isAnimatingIn: boolean = true;
   isSticky: boolean = false;
-  currentTitle: string | null = null;
+  currentTitle: string='';
   loggedInUserName :string = '';
   openIndex: number | null = null;
 
@@ -38,28 +39,26 @@ toggleDropdown(index: number) {
       },
       { 
         title: 'Video Management', 
-        icon: 'fa-media', 
+        icon: 'fa-video', 
         children: [
           { path: '/video-list', title: 'Video List' },
-          { path: '/add-video', title: 'Add Video' },
+        { path: '/add-video', title: 'Add Video' },
         ] 
       },
       { path: '/settings', icon: 'fa-cog', title: 'Settings' },
       { action: 'logout', icon: 'fa-right-from-bracket', title: 'Logout' } // Changed to action
     ];
 
-  constructor(private router: Router, private alertService: AlertSrvService, private titlesrv: TitleService) {
+  constructor(private router: Router, private alertService: AlertSrvService, public titlesrv: TitleService) {
 
   }
 
   ngOnInit(): void {
     // Username function
     this.getUserFromLocalStorage();
-
+    
     // Give Title to Service for this component
-    this.titlesrv.title$.subscribe(title=>{
-      this.currentTitle = title;
-    })
+    this.titlesrv.setTitle(this.currentTitle);
   }
 
   private getUserFromLocalStorage(): void {
@@ -69,7 +68,7 @@ toggleDropdown(index: number) {
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser);
-        this.loggedInUserName = parsedUser?.data?.emailId|| 'Guest';
+        this.loggedInUserName = parsedUser?.userName || 'Guest';
       } catch (e) {
         console.error('Error parsing user data:', e);
         this.loggedInUserName = 'Guest';
