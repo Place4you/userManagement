@@ -15,10 +15,10 @@ import { Subscription } from 'rxjs';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'] // Corrected this to `styleUrls`
 })
-export class UserListComponent implements OnInit, OnDestroy {
+export class UserListComponent implements OnInit{
 
   title: string = "User list of all users.";
-  userInfo: IUser[] = []; // Holds the user data from the BehaviorSubject
+  userInfo: IUser[] = []; // Holds the user data from localStorage
   private subscriptions = new Subscription();
   errorMessage: string | null = null;
   loading: boolean = false;
@@ -33,26 +33,27 @@ export class UserListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.titlesrv.setTitle(this.title);
 
-    // Subscribe to the user data from BehaviorSubject
-    this.subscriptions.add(this.apisrc.userData$.subscribe(
-      (data) => {
-        if (data) {
-          this.userInfo = data;
-        } else {
-          this.errorMessage = 'No data available';
-        }
-        this.loading = false;
-      },
-      (error) => {
-        this.errorMessage = 'Failed to fetch data. Please try again later.';
-        this.loading = false;
-      }
-    ));
+    // Check if user data is available in localStorage
+    const storedUserData = localStorage.getItem('users');
 
-    // Trigger loading of data if it's not already loaded
-    if (!this.userInfo.length) {
+    if (storedUserData) {
+      // If user data exists in localStorage, parse and assign it to userInfo
+      this.userInfo = JSON.parse(storedUserData);
+      this.loading = false;
+    } else {
+      // If no data in localStorage, make an API call to fetch and store the data
       this.loading = true;
-      this.apisrc.getallapi('user-endpoint-url').subscribe(); // Replace with your actual endpoint
+      this.subscriptions.add(this.apisrc.getAllUsers(Constant.GET_USERS).subscribe(
+        (data) => {
+          this.userInfo = data.data;
+          localStorage.setItem('users', JSON.stringify(this.userInfo)); // Save data to localStorage
+          this.loading = false;
+        },
+        (error) => {
+          this.errorMessage = 'Failed to fetch data. Please try again later.';
+          this.loading = false;
+        }
+      ));
     }
   }
 
@@ -69,15 +70,19 @@ export class UserListComponent implements OnInit, OnDestroy {
     console.log('update clicked');
     console.log(index);
 
-    this.apisrc.upadteUser('update-user-endpoint-url', updatedUser).subscribe(
+    this.subscriptions.add(this.apisrc.updateUser(Constant.UPDATE_USER ,updatedUser).subscribe(
       response => {
         this.alertService.showSuccess('User updated successfully!');
-        // Trigger refresh of user data if needed
+        // Optionally update localStorage after a successful update
+        const updatedUserList = [...this.userInfo];
+        updatedUserList[index] = updatedUser;
+        this.userInfo = updatedUserList;
+        localStorage.setItem('users', JSON.stringify(this.userInfo));
       },
       error => {
         this.alertService.showError('Failed to update user. Please try again.');
       }
-    );
+    ));
     console.log('Updated User:', updatedUser);
     this.editableRow = null; // Reset to normal view after update
   }
@@ -87,8 +92,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     return user.userId; // Assumes `userId` is the unique identifier
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-    this.alertService.clear();
-  }
+
 }
+
+

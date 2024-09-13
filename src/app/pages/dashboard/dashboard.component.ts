@@ -17,8 +17,11 @@ import { IVideo } from '../../core/Interface/IVideo';
 export class DashboardComponent implements OnInit, OnDestroy {
 
   title: string = "Latest Analytics";
-  users: IUser[] = []; // Data from the user API
-  videos: IVideo[] = []; // Data from the video API
+  userInfo: IUser[] = []; // Data from the user API
+  videoInfo: IVideo[] = []; // Data from the video API
+  loading:boolean= false;
+  errorMessage: string | null = null;
+
   private subscriptions: Subscription = new Subscription(); // For managing multiple subscriptions
 
   constructor(
@@ -31,35 +34,62 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // Set the title
     this.titlesrv.setTitle(this.title);
 
-    // Fetch user data on dashboard load
-    this.subscriptions.add(this.apiService.getallapi(Constant.GET_USERS).subscribe({
-      next: (response) => {
-        this.users = response.data; // Store the API response
-        console.log('User data:', this.users);
-      },
-      error: (err) => {
-        console.error('User API error:', err);
-        this.alertService.showError('Failed to load user data'); // Handle error with alert service
-      }
-    }));
+         // Check if user data is available in localStorage
 
-    // Fetch video data on dashboard load
-    this.subscriptions.add(this.apiService.getallvideos(Constant.GET_VIDEO).subscribe({
-      next: (response) => {
-        this.videos = response.data; // Store the API response
-        console.log('Video data:', this.videos);
-      },
-      error: (err) => {
-        console.error('Video API error:', err);
-        this.alertService.showError('Failed to load video data'); // Handle error with alert service
-      }
-    }));
+  {
+     const storedUserData = localStorage.getItem('users');
+
+     if (storedUserData) {
+       // If user data exists in localStorage, parse and assign it to userInfo
+       this.userInfo = JSON.parse(storedUserData);
+       this.loading = false;
+     } else {
+       // If no data in localStorage, make an API call to fetch and store the data
+       this.loading = true;
+       this.subscriptions.add(this.apiService.getAllUsers(Constant.GET_USERS).subscribe(
+         (data: { data: IUser[]; }) => {
+           this.userInfo = data.data;
+           localStorage.setItem('users', JSON.stringify(this.userInfo)); // Save data to localStorage
+           this.loading = false;
+         },
+         (error) => {
+           this.errorMessage = 'Failed to fetch data. Please try again later.';
+           this.loading = false;
+         }
+       ));
+     }
   }
+
+        // Check if video data is available in localStorage
+
+  {
+      const storedVideoData = localStorage.getItem('videos');
+
+      if (storedVideoData) {
+        // If user data exists in localStorage, parse and assign it to userInfo
+        this.userInfo = JSON.parse(storedVideoData);
+        this.loading = false;
+      } else {
+        // If no data in localStorage, make an API call to fetch and store the data
+        this.loading = true;
+        this.subscriptions.add(this.apiService.getallvideos(Constant.GET_VIDEO).subscribe(
+          (data: { data: IVideo[]; }) => {
+            this.videoInfo = data.data;
+            localStorage.setItem('videos', JSON.stringify(this.videoInfo)); // Save data to localStorage
+            this.loading = false;
+          },
+          (error) => {
+            this.errorMessage = 'Failed to fetch data. Please try again later.';
+            this.loading = false;
+          }
+        ));
+      }
+  }
+  }
+  
 
   ngOnDestroy(): void {
-    // Clear alerts and unsubscribe from all API calls
-    this.alertService.clear();
-    this.subscriptions.unsubscribe(); // Unsubscribe from all subscriptions
+this.alertService.clear();
   }
-
 }
+

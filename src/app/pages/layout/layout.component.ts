@@ -1,3 +1,4 @@
+import { ApiServiceService } from './../../services/api-service.service';
 // layout.component.ts
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
@@ -23,6 +24,9 @@ export class LayoutComponent implements OnInit {
   openIndex: number | null = null;
   menuOpen = false;
 
+  constructor(private apiService: ApiServiceService, private router: Router, private alertService: AlertSrvService, public titlesrv: TitleService) {
+
+  }
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
@@ -62,9 +66,7 @@ toggleDropdown(index: number) {
       { action: 'logout', icon: 'fa-right-from-bracket', title: 'Logout' } // Changed to action
     ];
 
-  constructor(private router: Router, private alertService: AlertSrvService, public titlesrv: TitleService) {
-
-  }
+ 
 
   ngOnInit(): void {
     // Username function
@@ -115,9 +117,11 @@ toggleDropdown(index: number) {
   onLogout() {
     // remove user info from localStorage
     localStorage.removeItem('loggedUser');
+    this.apiService.clearCache();
     this.alertService.showSuccess('Logout successful!');
     this.alertService.clear();
     this.router.navigateByUrl('/login');
+
   }
 
   onError() {

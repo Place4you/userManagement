@@ -30,8 +30,8 @@ export class ApiServiceService {
   }
 
   // Get all users, with caching in localStorage
-  getallapi(url: string): Observable<{ data: IUser[] }> {
-    const cachedUserData = localStorage.getItem('userData'); // Check for cached data in localStorage
+  getAllUsers(url: string): Observable<{ data: IUser[] }> {
+    const cachedUserData = localStorage.getItem('users'); // Check for cached data in localStorage
     
     if (cachedUserData) {
       // If data is found in localStorage, return it
@@ -44,7 +44,7 @@ export class ApiServiceService {
       // No data in localStorage, fetch from API
       return this.http.get<{ data: IUser[] }>(url).pipe(
         tap(response => {
-          localStorage.setItem('userData', JSON.stringify(response.data)); // Cache API response in localStorage
+          localStorage.setItem('users', JSON.stringify(response.data)); // Cache API response in localStorage
         })
       );
     }
@@ -52,7 +52,7 @@ export class ApiServiceService {
 
   // Video API - Same logic as getallapi, but for videos
   getallvideos(url: string): Observable<{ data: IVideo[] }> {
-    const cachedVideoData = localStorage.getItem('videoData'); // Check for cached video data
+    const cachedVideoData = localStorage.getItem('videos'); // Check for cached video data
     
     if (cachedVideoData) {
       // If data is found in localStorage, return it
@@ -65,7 +65,7 @@ export class ApiServiceService {
       // No cached video data, fetch from API
       return this.http.get<{ data: IVideo[] }>(url).pipe(
         tap(response => {
-          localStorage.setItem('videoData', JSON.stringify(response.data)); // Cache API response in localStorage
+          localStorage.setItem('videos', JSON.stringify(response.data)); // Cache API response in localStorage
         })
       );
     }
@@ -77,8 +77,8 @@ export class ApiServiceService {
 
   // Clear localStorage (e.g., on logout)
   clearCache() {
-    localStorage.removeItem('userData');
-    localStorage.removeItem('videoData');
+    localStorage.removeItem('users');
+    localStorage.removeItem('videos');
   }
 }
 
