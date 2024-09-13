@@ -21,6 +21,19 @@ export class LayoutComponent implements OnInit {
   currentTitle: string='';
   loggedInUserName :string = '';
   openIndex: number | null = null;
+  menuOpen = false;
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+  // Close the menu on click anywehre on screen
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: Event) {
+    const clickedInside = (event.target as HTMLElement).closest('.relative');
+    if (!clickedInside) {
+      this.menuOpen = false;
+    }
+  }
 
 toggleDropdown(index: number) {
   this.openIndex = this.openIndex === index ? null : index;

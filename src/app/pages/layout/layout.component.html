@@ -153,20 +153,37 @@
     
 
     <!-- Right Aligned Section -->
-    <div class="md:flex hidden  items-center space-x-8">
-      <!-- Logged-in User Name -->
-      <div class="text-sm font-medium">
-        <span class="font-gilroy font-semibold"> {{ loggedInUserName }}</span>
-        <p class="italic font-thin">Admin</p>
-      </div>
-  
-      <!-- Placeholder Avatar -->
-      <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-        <img class="object-contain" src="/assets/avatar.jpg"  alt="">
+    <div class="relative">
+      <!-- Button containing username, role, avatar, and chevron -->
+      <button (click)="toggleMenu()" 
+              class="flex items-center bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg shadow-md transition-all duration-300 space-x-3 focus:outline-none">
         
-
+        <!-- User details (name and role) -->
+        <div class="text-left">
+          <span class="block font-semibold text-sm font-gilroy text-gray-700">{{ loggedInUserName }}</span>
+          <p class="text-xs italic text-gray-500">Admin</p>
+        </div>
+    
+        <!-- Avatar and Chevron -->
+        <div class="flex items-center">
+          <img class="w-10 h-10 object-cover rounded-full" src="/assets/avatar.jpg" alt="User Avatar">
+          <i [ngClass]="menuOpen ? 'fa-chevron-up' : 'fa-chevron-down'" 
+             class="fas text-gray-500 ml-2 transition-transform duration-300"></i>
+        </div>
+      </button>
+    
+      <!-- Dropdown menu -->
+      <div *ngIf="menuOpen" 
+           class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg animate-fade-in z-10">
+        <button (click)="onLogout()" 
+                class="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-300">
+          Logout
+        </button>
       </div>
     </div>
+    
+
+
   </div>
   
 

@@ -7,6 +7,7 @@ import { Constant } from '../../../core/Constant';
 import { IUser } from '../../../core/Interface/IUsers'; // Assuming IUser is correctly imported
 import { TitleService } from '../../../services/title.service';
 import { AlertSrvService } from '../../../services/alert-srv.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-user-list',
   standalone: true,
@@ -16,21 +17,43 @@ import { AlertSrvService } from '../../../services/alert-srv.service';
 })
 export class UserListComponent implements OnInit, OnDestroy {
 
-  constructor(private apisrc: ApiServiceService, private titlesrv: TitleService, private alertService:AlertSrvService) {}
-  
-  title: string="User list of all users.";
-  titlenew = signal<string>('');
-  false:boolean= false;
+  title: string = "User list of all users.";
+  userInfo: IUser[] = []; // Holds the user data from the BehaviorSubject
+  private subscriptions = new Subscription();
   errorMessage: string | null = null;
-  successMessage: string | null = null;
   loading: boolean = false;
-  update: boolean = false;
   editableRow: number | null = null; // To track the row being edited
 
-  ngOnInit() {
-    this.getAllUsers();
+  constructor(
+    private apisrc: ApiServiceService, 
+    private titlesrv: TitleService, 
+    private alertService: AlertSrvService
+  ) {}
+
+  ngOnInit(): void {
     this.titlesrv.setTitle(this.title);
 
+    // Subscribe to the user data from BehaviorSubject
+    this.subscriptions.add(this.apisrc.userData$.subscribe(
+      (data) => {
+        if (data) {
+          this.userInfo = data;
+        } else {
+          this.errorMessage = 'No data available';
+        }
+        this.loading = false;
+      },
+      (error) => {
+        this.errorMessage = 'Failed to fetch data. Please try again later.';
+        this.loading = false;
+      }
+    ));
+
+    // Trigger loading of data if it's not already loaded
+    if (!this.userInfo.length) {
+      this.loading = true;
+      this.apisrc.getallapi('user-endpoint-url').subscribe(); // Replace with your actual endpoint
+    }
   }
 
   // Function to enable editing for the selected row
@@ -40,51 +63,23 @@ export class UserListComponent implements OnInit, OnDestroy {
     console.log(index);
   }
 
-  // Function to update user data (you can add API logic here)
-  updateUser(index:number) {
+  // Function to update user data
+  updateUser(index: number) {
     const updatedUser = this.userInfo[index];
     console.log('update clicked');
     console.log(index);
-    
-    
-    this.http.post(Constant.UPDATE_USER, updatedUser).subscribe(
-      response => {
-        this.alertService.showSuccess('New Student ADDED successfuly!');
 
+    this.apisrc.upadteUser('update-user-endpoint-url', updatedUser).subscribe(
+      response => {
+        this.alertService.showSuccess('User updated successfully!');
+        // Trigger refresh of user data if needed
       },
       error => {
-        this.false= false;
-        this.alertService.showError('Failed! Check Again');
-
+        this.alertService.showError('Failed to update user. Please try again.');
       }
     );
     console.log('Updated User:', updatedUser);
-    // Call your update API function here
     this.editableRow = null; // Reset to normal view after update
-  }
-
-  userInfo: IUser[] = []; // Holds the user data from the API
-
-
-  http = inject(HttpClient);
-
-
-
-  // Fetch user data
-  getAllUsers() {
-    this.loading = true;
-    this.apisrc.getallapi(Constant.GET_USERS).subscribe(
-      (res: { data: IUser[] }) => {
-        this.userInfo = res.data;
-        
-        this.errorMessage = null;
-        this.loading = false;
-      },
-      (error) => {
-        this.errorMessage = 'Failed to fetch data. Please try again later.';
-        this.loading = false;
-      }
-    );
   }
 
   // `trackBy` function to optimize rendering
@@ -92,7 +87,8 @@ export class UserListComponent implements OnInit, OnDestroy {
     return user.userId; // Assumes `userId` is the unique identifier
   }
 
-  ngOnDestroy(){
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
     this.alertService.clear();
   }
 }
