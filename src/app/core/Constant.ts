@@ -13,4 +13,9 @@ export const Constant = {
     ADD_VIDEO:'https://projectapi.gerasim.in/api/OnlineLearning/AddNewVideo',
     UPDATE_VIDEO:'https://projectapi.gerasim.in/api/OnlineLearning/UpdateVideo',
     DELETE_VIDEO:'https://projectapi.gerasim.in/api/OnlineLearning/DeleteVideo',
+
+    // Course APi
+    GET_COURSE : 'https://projectapi.gerasim.in/api/OnlineLearning/GetAllCourse',
   };
+
+

@@ -1,9 +1,10 @@
+import { ICourse } from './../core/Interface/ICourse';
 import { IVideo } from './../core/Interface/IVideo';
 import { IUser } from './../core/Interface/IUsers';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Constant } from '../core/Constant';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { ILoginResponse } from '../core/Interface/ILoginResponse';
 @Injectable({
   providedIn: 'root'
@@ -75,10 +76,29 @@ export class ApiServiceService {
     return this.http.post(`${Constant.ADD_VIDEO}` + url, data);
   }
 
+
+  getAllCourses(url: string): Observable<{ data: ICourse[] }> {
+    const cachedCourseData = localStorage.getItem('courses'); // Check for cached course data
+  
+    if (cachedCourseData) {
+      // If data is found in localStorage, return it
+      return of({ data: JSON.parse(cachedCourseData) }); // Use `of` to return an observable with cached data
+    } else {
+      // No cached course data, fetch from API
+      return this.http.get<{ data: ICourse[] }>(url).pipe(
+        tap(response => {
+          localStorage.setItem('courses', JSON.stringify(response.data)); // Cache API response in localStorage
+        })
+      );
+    }
+  }
+
+
   // Clear localStorage (e.g., on logout)
   clearCache() {
     localStorage.removeItem('users');
     localStorage.removeItem('videos');
+    localStorage.removeItem('courses');
   }
 }
 
