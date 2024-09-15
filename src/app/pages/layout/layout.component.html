@@ -44,7 +44,7 @@
               @if(!link.children) {
                 <a 
                   [routerLink]="[link.path]" 
-                  (click)="link.action === 'logout' ? onLogout() : null"
+                  (click)="onLinkClick(link)"
                   routerLinkActive="bg-blue-600 text-white" 
                   class="flex items-center py-2 px-4 rounded hover:bg-gray-700 transition-colors duration-300 ease-in-out"
                 >
@@ -67,6 +67,7 @@
                     <div class="ml-6 mt-2 space-y-2 transition-all duration-300 ease-in-out">
                       <a *ngFor="let child of link.children" 
                         [routerLink]="[child.path]" 
+                        (click)="onLinkClick(link)"
                         routerLinkActive="bg-gray-600 text-white" 
                         class="block py-1 px-3 rounded hover:bg-gray-500 transition-colors duration-300 ease-in-out"
                       >

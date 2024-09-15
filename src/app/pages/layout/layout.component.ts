@@ -93,7 +93,13 @@ toggleDropdown(index: number) {
     }
   }
 
-  
+  onLinkClick(link: any): void {
+    if (link.action === 'logout') {
+      this.onLogout();
+    }
+    // Close the menu
+    this.closeMenu();
+  }
   
 
   MobileMenu() {
