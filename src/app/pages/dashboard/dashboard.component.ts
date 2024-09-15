@@ -1,6 +1,6 @@
 import { ICourse } from './../../core/Interface/ICourse';
 import { AlertSrvService } from './../../services/alert-srv.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { TitleService } from '../../services/title.service';
 import { AlertsComponent } from "../../core/reuseable components/alerts/alerts.component";
 import { ApiServiceService } from '../../services/api-service.service';
@@ -10,8 +10,8 @@ import { Constant } from '../../core/Constant';
 import { IVideo } from '../../core/Interface/IVideo';
 import { AgCharts } from 'ag-charts-angular';
 import { AgChartOptions } from 'ag-charts-community';
-import { ChartServiceService } from '../../chart-service.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ChartServiceService } from '../../services/chart-service.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -19,7 +19,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit, AfterContentInit, OnDestroy {
 
   title: string = "Latest Analytics";
   userInfo: IUser[] = []; // Data from the user API
@@ -52,14 +52,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
       // Set the title
       this.titlesrv.setTitle(this.title);
     
-      // Load user data and charts
-      this.loadUserDataAndCharts();
-    
-      // Load video data and charts
-      this.loadVideoDataAndCharts();
 
-      // Load Course data and charts
-      this.loadCourseDataAndCharts();
+    }
+
+    ngAfterContentInit(): void {
+            // Load user data and charts
+            this.loadUserDataAndCharts();
+    
+            // Load video data and charts
+            this.loadVideoDataAndCharts();
+      
+            // Load Course data and charts
+            this.loadCourseDataAndCharts();
     }
 
     loadUserDataAndCharts(): void {

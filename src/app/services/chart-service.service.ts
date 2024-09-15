@@ -1,9 +1,8 @@
-import { IVideo } from './core/Interface/IVideo';
-import { IUser } from './core/Interface/IUsers';
+import { IVideo } from './../core/Interface/IVideo';
+import { IUser } from './../core/Interface/IUsers';
+import { ICourse } from './../core/Interface/ICourse';
 import { Injectable } from '@angular/core';
 import { AgChartOptions } from 'ag-charts-community';
-import { ICourse } from './core/Interface/ICourse';
-
 
 @Injectable({
   providedIn: 'root'
