@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit, AfterContentInit, OnDestroy {
   public pieChartOptions!: AgChartOptions;
   public donutChartOptions!: AgChartOptions;
   public barChartOptions!: AgChartOptions;
+  
 
 
   constructor(
@@ -51,6 +52,7 @@ export class DashboardComponent implements OnInit, AfterContentInit, OnDestroy {
     ngOnInit(): void {
       // Set the title
       this.titlesrv.setTitle(this.title);
+    console.log(this.title);
     
 
     }
