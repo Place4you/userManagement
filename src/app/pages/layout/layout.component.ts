@@ -8,10 +8,11 @@ import { AlertsComponent } from "../../core/reuseable components/alerts/alerts.c
 import { TitleService } from '../../services/title.service';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { Title } from '@angular/platform-browser';
+import { NavbarComponent } from "./navbar/navbar.component";
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLinkActive ,  DashboardComponent , RouterLink, AlertsComponent],
+  imports: [CommonModule, RouterOutlet, RouterLinkActive, DashboardComponent, RouterLink, AlertsComponent, NavbarComponent],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css']
 })
