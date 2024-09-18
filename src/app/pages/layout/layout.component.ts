@@ -8,7 +8,8 @@ import { AlertsComponent } from "../../core/reuseable components/alerts/alerts.c
 import { TitleService } from '../../services/title.service';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { Title } from '@angular/platform-browser';
-import { NavbarComponent } from "./navbar/navbar.component";
+import { NavbarComponent } from '../navbar/navbar.component';
+
 @Component({
   selector: 'app-layout',
   standalone: true,

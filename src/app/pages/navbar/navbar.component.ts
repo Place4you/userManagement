@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { ApiServiceService } from '../../services/api-service.service';
@@ -7,7 +7,7 @@ import { AlertsComponent } from '../../core/reuseable components/alerts/alerts.c
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [NgClass, RouterLink, RouterOutlet, AlertsComponent],
+  imports: [CommonModule , NgClass, RouterLink, RouterOutlet, AlertsComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
@@ -74,6 +74,7 @@ export class NavbarComponent implements OnInit {
   }
 
   onLogout(): void {
-    // Implement logout logic
+    this.apiService.clearCache();
+    this.router.navigateByUrl('/login');
   }
 }
