@@ -12,18 +12,18 @@
 
     <!-- Video Grid -->
     @if(!loading){
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6 overflow-x-hidden">
+      <div class=" contain-content   transition-all 1s grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6 overflow-x-hidden">
           <div
             *ngFor="let video of videoInfo | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index; trackBy: trackById"
-            class="relative max-w-sm bg-white rounded-lg shadow-md overflow-hidden">
-              <div class="transition-shadow duration-300 ease-in-out hover:shadow-2xl hover:border-2 hover:border-gray-700">
+            class=" border-box relative max-w-sm bg-white rounded-lg shadow-md overflow-hidden hover:shadow-2xl hover:border-2">
+              <div class="transition-shadow duration-300 ease-in-out">
                 <img class="object-contain w-full h-64" [src]="video.videoThumbnail" alt="Video Thumbnail">
                 <div class="p-6 rounded-md">
                     <h2 class="text-xl font-semibold">{{ video.videoTitle }}</h2>
                     <p class="mt-2 text-sm text-gray-600">{{ video.videoDescription }}</p>
                     <p class="mt-2 text-sm text-gray-600">Duration: {{ video.totalDuration }}</p>
-                    <button class="my-2 px-3 py-2 bg-blue-500 rounded-md shadow-md text-white font-bold">
-                      <a [href]="video.videoUrl" target="_blank" class="hover:underline">
+                    <button class="my-2 px-3 py-2 bg-blue-500 rounded-md shadow-md hover:bg-blue-800 hover:shadow-sm text-white font-bold">
+                      <a [href]="video.videoUrl" target="_blank" >
                           Watch Video
                       </a>
                     </button>
