@@ -1,4 +1,29 @@
 <div class="bg-white">
+
+  <!-- Notification Alert -->
+  <div class="pb-4 fixed top-0 left-0 m-auto w-full z-50 bg-red-600 font-bold text-center text-white text-sm sm:text-base px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-2 text-center m-auto">
+      <span class="font-bold">ALERT:</span>
+      <p >
+        This application uses a 3rd party API's which works locally ONLY on port 4209. For more details, visit 
+        <a 
+          href="http://bit.ly/48ReQRz" 
+          target="_blank" 
+          class="underline hover:text-blue-300 transition"
+        >
+          this link
+        </a>.
+      </p>
+    </div>
+    <button
+      class="text-white hover:text-blue-300 focus:outline-none"
+      onclick="this.parentElement.style.display='none'"
+    >
+      ✕
+    </button>
+  </div>
+
+
     <div class="flex justify-center h-screen">
       <div class="hidden lg:block lg:w-2/3 bg-cover bg-[url('/assets/mainback.jpg')]">
         <div class="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
