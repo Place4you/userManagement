@@ -1,4 +1,4 @@
-User Management V 1.0
+# User Management V 1.0
 
 ![User Frontend](public/user-frontend-thumbnail.JPG)
 
@@ -47,23 +47,19 @@ To run the Carto Frontend locally, follow these steps:
    ```bash
    git clone https://github.com/Place4you/userManagement.git
    
-2. Navigate to the project directory:
-   ```bash
-   git clone https://github.com/your-username/carto-frontend.git
-   
-3. Install Dependencies:
+2. Install Dependencies:
    ```bash
    npm install
 
-4. Start the application on port 4209 for backend API integration:
+3. Start the application on port 4209 for backend API integration:
    ```bash
    ng serve --port 4209
+
+
+
 ## Usage
 Open the application in your browser:
    http://localhost:4209
-
-## Usage
-
 1. Navigate to the application URL in your web browser.
 2. Sign up for a new account or log in with existing credentials.
 3. Explore features such as:
