@@ -57,33 +57,46 @@ export class UserListComponent implements OnInit{
     }
   }
 
+
+  
+
   // Function to enable editing for the selected row
   editRow(index: number) {
     this.editableRow = index;
-    console.log('edit clicked');
     console.log(index);
   }
 
+  private sortByLatest(a: IUser, b: IUser): number {
+    // Adjust property name to match your data structure
+    return new Date(b.userId).getTime() - new Date(a.userId).getTime();
+  
+  }
   // Function to update user data
   updateUser(index: number) {
     const updatedUser = this.userInfo[index];
-    console.log('update clicked');
     console.log(index);
 
-    this.subscriptions.add(this.apisrc.updateUser(Constant.UPDATE_USER ,updatedUser).subscribe(
+    this.subscriptions.add(this.apisrc.updateUser(Constant.UPDATE_USER, updatedUser).subscribe(
       response => {
         this.alertService.showSuccess('User updated successfully!');
-        // Optionally update localStorage after a successful update
+        
+        // Update the user in the list
         const updatedUserList = [...this.userInfo];
         updatedUserList[index] = updatedUser;
-        this.userInfo = updatedUserList;
+    
+        // Sort the list from latest to oldest (assumes `createdAt` or similar property exists)
+        this.userInfo = updatedUserList.sort(this.sortByLatest);
+    
+        // Update local storage with the sorted list
         localStorage.setItem('users', JSON.stringify(this.userInfo));
+    
+        console.log('Updated User:', updatedUser);
       },
       error => {
         this.alertService.showError('Failed to update user. Please try again.');
       }
     ));
-    console.log('Updated User:', updatedUser);
+    
     this.editableRow = null; // Reset to normal view after update
   }
 

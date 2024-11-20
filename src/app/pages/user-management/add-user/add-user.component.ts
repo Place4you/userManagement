@@ -49,7 +49,8 @@ export class AddUserComponent implements OnInit, OnDestroy {
         response => {
           this.isLoading= false;
           this.alertService.showSuccess('New Student ADDED successfuly!');
-
+          // Clear the localStorage key for users
+          localStorage.removeItem('users');
         },
         error => {
           this.isLoading= false;
