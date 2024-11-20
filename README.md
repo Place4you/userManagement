@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/f0d197d3-62ba-4650-a05a-517e227039b0)# User Management V 1.0
+User Management V 1.0
 
 ![User Frontend](public/user-frontend-thumbnail.JPG)
 
