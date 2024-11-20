@@ -1,27 +1,90 @@
-# UserManagement
+![image](https://github.com/user-attachments/assets/f0d197d3-62ba-4650-a05a-517e227039b0)# User Management V 1.0
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.0.
+![User Frontend](public/user-frontend-thumbnail.JPG)
 
-## Development server
+## Overview
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+User Management V 1.0 is an Angular and TypeScript-based web application enhanced with improved UI/UX and modern features. It offers functionalities for user and admin management, video content administration, and interactive analytical dashboards. The application is responsive, API-integrated, and built with scalability in mind.
 
-## Code scaffolding
+## Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Authentication:**
+  - Signup and login functionality.
 
-## Build
+- **User/Admin Dashboard:**
+  - Interactive analytical charts using ag-charts.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **User Management:**
+  - View all users/students in a user list.
+  - Edit and update user details.
+  - Add new students via a dynamic form.
 
-## Running unit tests
+- **Video Management:**
+  - View admin-recommended video lists.
+  - Add new videos through a dedicated form.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **Mobile Responsive Design:**
+  - Optimized for all devices.
 
-## Running end-to-end tests
+- **API Integration:**
+  - Fully integrated with a third-party backend.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- **RxJS Mastery:**
+  - Real-time data flow and handling using RxJS.
 
-## Further help
+## Technologies Used
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **Frontend Framework:** Angular + TypeScript
+- **Charts:** ag-charts
+- **Styling:** CSS and Angular Material
+- **State Management:** RxJS for reactive programming
+
+## Installation
+
+To run the Carto Frontend locally, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Place4you/userManagement.git
+   
+2. Navigate to the project directory:
+   ```bash
+   git clone https://github.com/your-username/carto-frontend.git
+   
+3. Install Dependencies:
+   ```bash
+   npm install
+
+4. Start the application on port 4209 for backend API integration:
+   ```bash
+   ng serve --port 4209
+## Usage
+Open the application in your browser:
+   http://localhost:4209
+
+## Usage
+
+1. Navigate to the application URL in your web browser.
+2. Sign up for a new account or log in with existing credentials.
+3. Explore features such as:
++ Viewing and managing users/students.
++ Interacting with the analytics dashboard.
++ Managing video recommendations.
+
+## Contributing
+
+Contributions are welcome! If you'd like to contribute to Carto, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix: `git checkout -b feature-name`
+3. Make your changes and commit them: `git commit -m "Add new feature"`
+4. Push to your branch: `git push origin feature-name`
+5. Submit a pull request detailing your changes.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Contact
+
+For any inquiries or support, please contact sadiraja500@gmail.com.
